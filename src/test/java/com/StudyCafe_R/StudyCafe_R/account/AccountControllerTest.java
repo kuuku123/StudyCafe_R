@@ -1,6 +1,7 @@
 package com.StudyCafe_R.StudyCafe_R.account;
 
 import com.StudyCafe_R.StudyCafe_R.account.repository.AccountRepository;
+import com.StudyCafe_R.StudyCafe_R.domain.Account;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,8 +60,11 @@ class AccountControllerTest {
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
-        boolean b = accountRepository.existsByEmail("tony@gmail.com");
-        assertTrue(b);
+
+        Account account = accountRepository.findByEmail("tony@gmail.com");
+        assertNotNull(account);
+        assertNotEquals(account.getPassword(),"12345678");
+
         then(javaMailSender).should().send(any(SimpleMailMessage.class));
     }
 }
