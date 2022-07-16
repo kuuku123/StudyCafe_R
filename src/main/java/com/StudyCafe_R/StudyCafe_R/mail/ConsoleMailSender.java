@@ -1,4 +1,4 @@
-package com.StudyCafe_R.StudyCafe_R;
+package com.StudyCafe_R.StudyCafe_R.mail;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
