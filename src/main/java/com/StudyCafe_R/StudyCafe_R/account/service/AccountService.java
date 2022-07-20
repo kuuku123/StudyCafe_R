@@ -1,6 +1,7 @@
 package com.StudyCafe_R.StudyCafe_R.account.service;
 
 import com.StudyCafe_R.StudyCafe_R.account.SignUpForm;
+import com.StudyCafe_R.StudyCafe_R.account.UserAccount;
 import com.StudyCafe_R.StudyCafe_R.account.repository.AccountRepository;
 import com.StudyCafe_R.StudyCafe_R.domain.Account;
 import lombok.RequiredArgsConstructor;
@@ -58,7 +59,7 @@ public class AccountService {
     //TODO password Authentication이 정석적인 방법이 아니라 혼란을 야기할 수 있다.
     public void login(Account account) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                account.getNickname(),account.getPassword(), List.of(new SimpleGrantedAuthority("ROLE_USER")));
+                new UserAccount(account),account.getPassword(), List.of(new SimpleGrantedAuthority("ROLE_USER")));
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(token);
     }
