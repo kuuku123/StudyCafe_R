@@ -47,7 +47,7 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
-    private void sendSignupConfirmEmail(Account newAccount) {
+    public void sendSignupConfirmEmail(Account newAccount) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setTo(newAccount.getEmail());
         simpleMailMessage.setSubject("스터디카페, 회원 가입 인증");
@@ -56,11 +56,12 @@ public class AccountService {
         javaMailSender.send(simpleMailMessage);
     }
 
-    //TODO password Authentication이 정석적인 방법이 아니라 혼란을 야기할 수 있다.
+    //TODO password Authentication 이 정석적인 방법이 아니라 혼란을 야기할 수 있다.
     public void login(Account account) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 new UserAccount(account),account.getPassword(), List.of(new SimpleGrantedAuthority("ROLE_USER")));
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(token);
     }
+
 }
