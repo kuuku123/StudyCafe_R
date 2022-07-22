@@ -21,13 +21,13 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class AccountService {
 
     private final AccountRepository accountRepository;
     private final JavaMailSender javaMailSender;
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional
     public Account processNewAccount(SignUpForm signUpForm) {
 
         Account newAccount = saveNewAccount(signUpForm);
@@ -64,4 +64,8 @@ public class AccountService {
         context.setAuthentication(token);
     }
 
+    public void completeSignUp(Account account) {
+        account.completeSignUp();
+        login(account);
+    }
 }

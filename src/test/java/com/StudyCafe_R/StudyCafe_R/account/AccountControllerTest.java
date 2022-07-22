@@ -13,6 +13,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
@@ -108,5 +109,14 @@ class AccountControllerTest {
         assertNotNull(account.getEmailCheckToken());
 
         then(javaMailSender).should().send(any(SimpleMailMessage.class));
+    }
+
+    @DisplayName("프로필뷰 테스트 예외")
+    @Test
+    void profile_with_wrong_nickname() throws Exception {
+        String nickname = "wrong";
+
+        assertThatThrownBy(() -> mockMvc.perform(get("/profile/{nickname}", nickname)))
+                .hasCauseInstanceOf(IllegalArgumentException.class);
     }
 }
