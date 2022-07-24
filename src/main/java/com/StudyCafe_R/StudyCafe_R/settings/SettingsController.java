@@ -19,8 +19,8 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class SettingsController {
 
-    private static final String SETTINGS_PROFILE_VIEW_NAME = "settings/profile";
-    private static final String SETTINGS_PROFILE_URL = "/settings/profile";
+    static final String SETTINGS_PROFILE_VIEW_NAME = "settings/profile";
+    static final String SETTINGS_PROFILE_URL = "/settings/profile";
     private final AccountService accountService;
     @GetMapping(SETTINGS_PROFILE_URL)
     public String profileUpdateForm(@CurrentUser Account account , Model model) {
@@ -30,7 +30,6 @@ public class SettingsController {
 
         return SETTINGS_PROFILE_VIEW_NAME;
     }
-
     @PostMapping(SETTINGS_PROFILE_URL)
     public String updateProfile(@CurrentUser Account account, @Valid @ModelAttribute Profile profile,
                                 BindingResult bindingResult,
@@ -46,5 +45,4 @@ public class SettingsController {
         redirectAttributes.addFlashAttribute("message","프로필 수정 성공");
         return "redirect:" + SETTINGS_PROFILE_URL;
     }
-
 }
