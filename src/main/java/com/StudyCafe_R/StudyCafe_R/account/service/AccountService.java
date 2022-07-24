@@ -4,6 +4,7 @@ import com.StudyCafe_R.StudyCafe_R.account.SignUpForm;
 import com.StudyCafe_R.StudyCafe_R.account.UserAccount;
 import com.StudyCafe_R.StudyCafe_R.account.repository.AccountRepository;
 import com.StudyCafe_R.StudyCafe_R.domain.Account;
+import com.StudyCafe_R.StudyCafe_R.settings.Profile;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.utility.JavaConstant;
 import org.springframework.mail.SimpleMailMessage;
@@ -67,5 +68,13 @@ public class AccountService {
     public void completeSignUp(Account account) {
         account.completeSignUp();
         login(account);
+    }
+
+    public void updateProfile(Account account, Profile profile) {
+        account.setUrl(profile.getUrl());
+        account.setOccupation(profile.getOccupation());
+        account.setLocation(profile.getLocation());
+        account.setBio(profile.getBio());
+        accountRepository.save(account); // merge detached entity
     }
 }

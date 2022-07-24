@@ -2,8 +2,10 @@ package com.StudyCafe_R.StudyCafe_R.settings;
 
 import com.StudyCafe_R.StudyCafe_R.domain.Account;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class Profile {
 
     private String bio;
