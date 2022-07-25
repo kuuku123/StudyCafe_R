@@ -78,4 +78,9 @@ public class AccountService {
         account.setProfileImage(profile.getProfileImage());
         accountRepository.save(account); // merge detached entity
     }
+
+    public void updatePassword(Account account, String newPassword) {
+        account.setPassword(passwordEncoder.encode(newPassword));
+        accountRepository.save(account);
+    }
 }
