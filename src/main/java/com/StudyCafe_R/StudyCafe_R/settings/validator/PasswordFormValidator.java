@@ -1,5 +1,6 @@
-package com.StudyCafe_R.StudyCafe_R.settings;
+package com.StudyCafe_R.StudyCafe_R.settings.validator;
 
+import com.StudyCafe_R.StudyCafe_R.settings.form.PasswordForm;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
