@@ -8,6 +8,7 @@ import com.StudyCafe_R.StudyCafe_R.settings.Notifications;
 import com.StudyCafe_R.StudyCafe_R.settings.Profile;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.utility.JavaConstant;
+import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,6 +30,7 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final JavaMailSender javaMailSender;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
     public Account processNewAccount(SignUpForm signUpForm) {
 
@@ -72,11 +74,7 @@ public class AccountService {
     }
 
     public void updateProfile(Account account, Profile profile) {
-        account.setUrl(profile.getUrl());
-        account.setOccupation(profile.getOccupation());
-        account.setLocation(profile.getLocation());
-        account.setBio(profile.getBio());
-        account.setProfileImage(profile.getProfileImage());
+        modelMapper.map(profile,account);
         accountRepository.save(account); // merge detached entity
     }
 
@@ -86,12 +84,7 @@ public class AccountService {
     }
 
     public void updateNotifications(Account account, Notifications notifications) {
-        account.setStudyCreatedByWeb(notifications.isStudyCreatedByWeb());
-        account.setStudyCreatedByEmail(notifications.isStudyCreatedByEmail());
-        account.setStudyUpdatedByWeb(notifications.isStudyUpdatedByWeb());
-        account.setStudyUpdatedByEmail(notifications.isStudyUpdatedByEmail());
-        account.setStudyEnrollmentResultByEmail(notifications.isStudyEnrollmentResultByEmail());
-        account.setStudyEnrollmentResultByWeb(notifications.isStudyEnrollmentResultByWeb());
+        modelMapper.map(notifications,account);
         accountRepository.save(account);
     }
 }

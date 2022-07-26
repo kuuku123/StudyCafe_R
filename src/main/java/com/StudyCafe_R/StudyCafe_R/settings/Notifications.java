@@ -3,9 +3,10 @@ package com.StudyCafe_R.StudyCafe_R.settings;
 import com.StudyCafe_R.StudyCafe_R.domain.Account;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Data
-@NoArgsConstructor
 public class Notifications {
 
     private boolean studyCreatedByEmail;
@@ -20,12 +21,4 @@ public class Notifications {
 
     private boolean studyUpdatedByWeb;
 
-    public Notifications(Account account) {
-        this.studyCreatedByEmail = account.isStudyCreatedByEmail();
-        this.studyCreatedByWeb = account.isStudyCreatedByWeb();
-        this.studyEnrollmentResultByEmail = account.isStudyEnrollmentResultByEmail();
-        this.studyEnrollmentResultByWeb = account.isStudyUpdatedByWeb();
-        this.studyUpdatedByEmail = account.isStudyUpdatedByEmail();
-        this.studyUpdatedByWeb = account.isStudyUpdatedByWeb();
-    }
 }
