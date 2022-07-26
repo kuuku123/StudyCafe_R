@@ -5,6 +5,8 @@ import net.bytebuddy.asm.Advice;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -14,6 +16,7 @@ import java.util.UUID;
 public class Account {
 
     @Id @GeneratedValue
+    @Column(name= "ACCOUNT_ID")
     private Long id;
 
     @Column(unique = true)
@@ -53,8 +56,11 @@ public class Account {
 
     private boolean studyUpdatedByEmail;
 
-    private boolean studyUpdatedByWeb;
+    private boolean studyUpdatedByWeb = true;
     private LocalDateTime emailCheckTokenGeneratedAt;
+
+    @OneToMany(mappedBy = "account")
+    private Set<AccountTag> accountTagSet = new HashSet<>();
 
     public void generateEmailCheckToken() {
         this.emailCheckToken = UUID.randomUUID().toString();
