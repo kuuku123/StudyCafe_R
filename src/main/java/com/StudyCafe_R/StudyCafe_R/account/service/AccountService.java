@@ -8,6 +8,7 @@ import com.StudyCafe_R.StudyCafe_R.domain.AccountTag;
 import com.StudyCafe_R.StudyCafe_R.domain.Tag;
 import com.StudyCafe_R.StudyCafe_R.settings.form.Notifications;
 import com.StudyCafe_R.StudyCafe_R.settings.form.Profile;
+import com.StudyCafe_R.StudyCafe_R.tag.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
@@ -31,9 +32,11 @@ import java.util.Set;
 public class AccountService {
 
     private final AccountRepository accountRepository;
+    private final TagRepository tagRepository;
     private final JavaMailSender javaMailSender;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
+
 
     public Account processNewAccount(SignUpForm signUpForm) {
 
@@ -125,5 +128,6 @@ public class AccountService {
         accountRepository.findById(account.getId())
                 .ifPresent(a -> a.removeAccountTag(tag));
 
+//        tagRepository.delete(tag);  // we want tag to be alive , later we can look AccountTag table and search for Tag that has no reference
     }
 }
