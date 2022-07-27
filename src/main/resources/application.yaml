@@ -7,10 +7,22 @@ spring:
 #    username: root
 #    password: 1234
 #
-#  jpa:
-#    hibernate:
-#      ddl-auto: update
-#    show-sql: true
-#
-#  thymeleaf:
-#    cache: false
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  thymeleaf:
+    cache: false
+logging:
+  level:
+    org:
+      hibernate:
+        format_sql: true
+        type:
+          descriptor:
+            sql:
+              org.hibernate.type.descriptor.sql.BasicBinder: TRACE

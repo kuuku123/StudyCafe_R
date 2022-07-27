@@ -16,6 +16,7 @@ public class Tag {
     @Column(name = "TAG_ID")
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String title;
 
     @OneToMany(mappedBy = "tag")

@@ -8,12 +8,30 @@
   <!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">-->
   <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css"/>
   <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.css" />
+  <link rel="stylesheet" href="/node_modules/@yaireo/tagify/dist/tagify.css">
   <script src="/node_modules/jquery/dist/jquery.min.js"></script>
   <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
   <style>
     .container {
       max-width: 100%;
+    }
+    .tagify--outside{
+      border: 0;
+    }
+
+    .tagify--outside .tagify__input{
+      order: -1;
+      flex: 100%;
+      border: 1px solid var(--tags-border-color);
+      margin-bottom: 1em;
+      transition: .1s;
+    }
+
+    .tagify--outside .tagify__input:hover{ border-color:var(--tags-hover-border-color); }
+    .tagify--outside.tagify--focus .tagify__input{
+      transition:0s;
+      border-color: var(--tags-focus-border-color);
     }
   </style>
 </head>
