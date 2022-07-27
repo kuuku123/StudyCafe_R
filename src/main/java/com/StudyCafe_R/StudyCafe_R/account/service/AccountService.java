@@ -119,4 +119,11 @@ public class AccountService {
         Optional<Account> byId = accountRepository.findById(account.getId());
         return byId.orElseThrow().getAccountTagSet();
     }
+
+    public void removeTag(Account account, Tag tag) {
+
+        accountRepository.findById(account.getId())
+                .ifPresent(a -> a.removeAccountTag(tag));
+
+    }
 }

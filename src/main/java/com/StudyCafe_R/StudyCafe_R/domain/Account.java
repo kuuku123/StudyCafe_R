@@ -85,4 +85,15 @@ public class Account {
         this.accountTagSet.add(accountTag);
         accountTag.setAccount(this);
     }
+
+    public void removeAccountTag(Tag tag) {
+        for (AccountTag accountTag : this.accountTagSet) {
+            Tag tag1 = accountTag.getTag();
+            if (tag1.getTitle().equals(tag.getTitle())) {
+                accountTagSet.remove(accountTag);
+                accountTag.setAccount(null);
+                break;
+            }
+        }
+    }
 }
