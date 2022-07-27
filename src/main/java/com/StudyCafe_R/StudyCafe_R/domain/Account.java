@@ -59,7 +59,8 @@ public class Account {
     private boolean studyUpdatedByWeb = true;
     private LocalDateTime emailCheckTokenGeneratedAt;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account",cascade = CascadeType.ALL)
+    @Builder.Default
     private Set<AccountTag> accountTagSet = new HashSet<>();
 
     public void generateEmailCheckToken() {

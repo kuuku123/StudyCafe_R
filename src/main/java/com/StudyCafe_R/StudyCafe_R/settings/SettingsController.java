@@ -3,6 +3,7 @@ package com.StudyCafe_R.StudyCafe_R.settings;
 import com.StudyCafe_R.StudyCafe_R.account.CurrentUser;
 import com.StudyCafe_R.StudyCafe_R.account.service.AccountService;
 import com.StudyCafe_R.StudyCafe_R.domain.Account;
+import com.StudyCafe_R.StudyCafe_R.domain.AccountTag;
 import com.StudyCafe_R.StudyCafe_R.domain.Tag;
 import com.StudyCafe_R.StudyCafe_R.settings.form.*;
 import com.StudyCafe_R.StudyCafe_R.settings.validator.NicknameValidator;
@@ -21,6 +22,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -140,6 +143,8 @@ public class SettingsController {
     @GetMapping(SETTINGS_TAGS_URL)
     public String updateTags(@CurrentUser Account account, Model model) {
         model.addAttribute(account);
+        Set<AccountTag> accountTags = accountService.getTags(account);
+        model.addAttribute("tags",accountTags.stream().map(at -> at.getTag().getTitle()).collect(Collectors.toList()));
         return SETTINGS_TAGS_VIEW_NAME;
     }
 

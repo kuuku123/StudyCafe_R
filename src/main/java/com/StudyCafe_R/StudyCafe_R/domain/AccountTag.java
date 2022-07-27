@@ -14,11 +14,11 @@ public class AccountTag {
     @Id @GeneratedValue
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="ACCOUNT_ID")
     private Account account;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TAG_ID")
     private Tag tag;
 

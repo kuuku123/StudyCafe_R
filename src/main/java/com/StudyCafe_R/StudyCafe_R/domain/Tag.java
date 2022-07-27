@@ -19,7 +19,7 @@ public class Tag {
     @Column(unique = true, nullable = false)
     private String title;
 
-    @OneToMany(mappedBy = "tag")
+    @OneToMany(mappedBy = "tag",cascade = CascadeType.ALL)
     private Set<AccountTag> accountTagSet = new HashSet<>();
 
 }

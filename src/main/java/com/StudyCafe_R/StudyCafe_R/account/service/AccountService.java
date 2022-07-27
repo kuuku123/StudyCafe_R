@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 
 @RequiredArgsConstructor
@@ -111,6 +113,10 @@ public class AccountService {
                 .build();
         accountRepository.findById(account.getId())
                 .ifPresent(a -> a.addAccountTag(accountTag));
+    }
 
+    public Set<AccountTag> getTags(Account account) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        return byId.orElseThrow().getAccountTagSet();
     }
 }
