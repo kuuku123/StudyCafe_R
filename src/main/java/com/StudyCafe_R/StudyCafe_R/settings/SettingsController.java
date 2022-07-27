@@ -3,26 +3,24 @@ package com.StudyCafe_R.StudyCafe_R.settings;
 import com.StudyCafe_R.StudyCafe_R.account.CurrentUser;
 import com.StudyCafe_R.StudyCafe_R.account.service.AccountService;
 import com.StudyCafe_R.StudyCafe_R.domain.Account;
-import com.StudyCafe_R.StudyCafe_R.settings.form.NicknameForm;
-import com.StudyCafe_R.StudyCafe_R.settings.form.Notifications;
-import com.StudyCafe_R.StudyCafe_R.settings.form.PasswordForm;
-import com.StudyCafe_R.StudyCafe_R.settings.form.Profile;
+import com.StudyCafe_R.StudyCafe_R.domain.Tag;
+import com.StudyCafe_R.StudyCafe_R.settings.form.*;
 import com.StudyCafe_R.StudyCafe_R.settings.validator.NicknameValidator;
 import com.StudyCafe_R.StudyCafe_R.settings.validator.PasswordFormValidator;
+import com.StudyCafe_R.StudyCafe_R.tag.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 
 @Controller
@@ -43,6 +41,7 @@ public class SettingsController {
     private final AccountService accountService;
     private final ModelMapper modelMapper;
     private final NicknameValidator nicknameValidator;
+    private final TagRepository tagRepository;
 
     @InitBinder("passwordForm")
     public void passwordFormInitBinder(WebDataBinder webDataBinder) {
@@ -116,11 +115,6 @@ public class SettingsController {
         return "redirect:" + SETTINGS_NOTIFICATIONS_URL;
     }
 
-    @GetMapping(SETTINGS_TAGS_URL)
-    public String updateTags(@CurrentUser Account account, Model model) {
-        model.addAttribute(account);
-        return SETTINGS_TAGS_VIEW_NAME;
-    }
 
 
     @GetMapping(SETTINGS_ACCOUNT_URL)
@@ -141,5 +135,26 @@ public class SettingsController {
         accountService.updateNickname(account,nicknameForm.getNickname());
         redirectAttributes.addFlashAttribute("message","닉네임을 수정했습니다.");
         return "redirect:" + SETTINGS_ACCOUNT_URL;
+    }
+
+    @GetMapping(SETTINGS_TAGS_URL)
+    public String updateTags(@CurrentUser Account account, Model model) {
+        model.addAttribute(account);
+        return SETTINGS_TAGS_VIEW_NAME;
+    }
+
+    @PostMapping("/settings/tags/add")
+    @ResponseBody
+    public ResponseEntity addTag(@CurrentUser Account account, Model model, @RequestBody TagForm tagForm) {
+        String title = tagForm.getTagTitle();
+        Tag tag = tagRepository.findByTitle(title)
+                .orElseGet(() -> tagRepository.save(Tag.builder()
+                        .title(tagForm.getTagTitle())
+                        .build()));
+        accountService.addTag(account,tag);
+        return ResponseEntity.ok().build();
+
+
+
     }
 }

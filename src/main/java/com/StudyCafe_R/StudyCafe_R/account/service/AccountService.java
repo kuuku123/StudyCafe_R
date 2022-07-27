@@ -4,6 +4,8 @@ import com.StudyCafe_R.StudyCafe_R.account.SignUpForm;
 import com.StudyCafe_R.StudyCafe_R.account.UserAccount;
 import com.StudyCafe_R.StudyCafe_R.account.repository.AccountRepository;
 import com.StudyCafe_R.StudyCafe_R.domain.Account;
+import com.StudyCafe_R.StudyCafe_R.domain.AccountTag;
+import com.StudyCafe_R.StudyCafe_R.domain.Tag;
 import com.StudyCafe_R.StudyCafe_R.settings.form.Notifications;
 import com.StudyCafe_R.StudyCafe_R.settings.form.Profile;
 import lombok.RequiredArgsConstructor;
@@ -101,5 +103,14 @@ public class AccountService {
         mailMessage.setText("/login-by-email?token=" + account.getEmailCheckToken() +
                 "&email=" + account.getEmail());
         javaMailSender.send(mailMessage);
+    }
+
+    public void addTag(Account account, Tag tag) {
+        AccountTag accountTag = AccountTag.builder()
+                .tag(tag)
+                .build();
+        accountRepository.findById(account.getId())
+                .ifPresent(a -> a.addAccountTag(accountTag));
+
     }
 }

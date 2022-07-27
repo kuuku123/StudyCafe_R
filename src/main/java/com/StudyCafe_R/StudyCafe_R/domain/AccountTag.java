@@ -1,8 +1,14 @@
 package com.StudyCafe_R.StudyCafe_R.domain;
 
+import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter @Setter
 public class AccountTag {
 
     @Id @GeneratedValue
@@ -15,4 +21,5 @@ public class AccountTag {
     @ManyToOne
     @JoinColumn(name = "TAG_ID")
     private Tag tag;
+
 }

@@ -79,4 +79,9 @@ public class Account {
     public boolean canSendConfirmationEmail() {
         return this.emailCheckTokenGeneratedAt.isBefore(LocalDateTime.now().minusHours(1));
     }
+
+    public void addAccountTag(AccountTag accountTag) {
+        this.accountTagSet.add(accountTag);
+        accountTag.setAccount(this);
+    }
 }
