@@ -66,6 +66,11 @@ public class Account {
     @Builder.Default
     private Set<AccountTag> accountTagSet = new HashSet<>();
 
+    @OneToMany(mappedBy = "account",cascade = CascadeType.ALL)
+    @Builder.Default
+    private Set<AccountZone> accountZoneSet = new HashSet<>();
+
+
     public void generateEmailCheckToken() {
         this.emailCheckToken = UUID.randomUUID().toString();
         this.emailCheckTokenGeneratedAt = LocalDateTime.now();
@@ -95,6 +100,22 @@ public class Account {
             if (tag1.getTitle().equals(tag.getTitle())) {
                 accountTagSet.remove(accountTag);
                 accountTag.setAccount(null);
+                break;
+            }
+        }
+    }
+
+    public void addAccountZone(AccountZone accountZone) {
+        this.accountZoneSet.add(accountZone);
+        accountZone.setAccount(this);
+    }
+
+    public void removeAccountZone(Zone zone) {
+        for (AccountZone accountZone : this.accountZoneSet) {
+            Zone zone1 = accountZone.getZone();
+            if (zone1.equals(zone)) {
+                accountZoneSet.remove(accountZone);
+                accountZone.setAccount(null);
                 break;
             }
         }

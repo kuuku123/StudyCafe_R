@@ -3,9 +3,7 @@ package com.StudyCafe_R.StudyCafe_R.account.service;
 import com.StudyCafe_R.StudyCafe_R.account.SignUpForm;
 import com.StudyCafe_R.StudyCafe_R.account.UserAccount;
 import com.StudyCafe_R.StudyCafe_R.account.repository.AccountRepository;
-import com.StudyCafe_R.StudyCafe_R.domain.Account;
-import com.StudyCafe_R.StudyCafe_R.domain.AccountTag;
-import com.StudyCafe_R.StudyCafe_R.domain.Tag;
+import com.StudyCafe_R.StudyCafe_R.domain.*;
 import com.StudyCafe_R.StudyCafe_R.settings.form.Notifications;
 import com.StudyCafe_R.StudyCafe_R.settings.form.Profile;
 import com.StudyCafe_R.StudyCafe_R.tag.TagRepository;
@@ -124,5 +122,24 @@ public class AccountService {
                 .ifPresent(a -> a.removeAccountTag(tag));
 
 //        tagRepository.delete(tag);  // we want tag to be alive , later we can look AccountTag table and search for Tag that has no reference
+    }
+
+
+    public Set<AccountZone> getZones(Account account) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        return byId.orElseThrow().getAccountZoneSet();
+    }
+
+    public void addZone(Account account, Zone zone) {
+
+        AccountZone accountZone = AccountZone.builder().zone(zone).build();
+        Optional<Account> byId = accountRepository.findById(account.getId());
+
+        byId.ifPresent(a -> a.addAccountZone(accountZone));
+    }
+
+    public void removeZone(Account account, Zone zone) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        byId.ifPresent(a -> a.removeAccountZone(zone));
     }
 }

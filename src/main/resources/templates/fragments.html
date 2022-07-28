@@ -18,11 +18,13 @@
     }
     .tagify--outside{
       border: 0;
+      width: 100%;
     }
 
     .tagify--outside .tagify__input{
       order: -1;
-      flex: 100%;
+      /*flex: 100%;*/
+      width: 100%;
       border: 1px solid var(--tags-border-color);
       margin-bottom: 1em;
       transition: .1s;
@@ -138,5 +140,17 @@
     }, false)
   }())
 </script>
+
+<script type="application/javascript" th:inline="javascript" th:fragment="ajax-csrf-header">
+  $(function() {
+    var csrfToken = /*[[${_csrf.token}]]*/ null;
+    var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
+    $(document).ajaxSend(function (e, xhr, options) {
+      xhr.setRequestHeader(csrfHeader, csrfToken);
+    });
+  });
+</script>
+
+
 
 </html>
