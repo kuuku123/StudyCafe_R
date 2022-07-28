@@ -65,3 +65,12 @@ task hello {
 		println 'Hello'
 	}
 }
+
+jar {
+	manifest {
+		attributes(
+				'Class-Path': configurations.runtimeClasspath.files.collect { it.getName() }.join(' '),
+				'Main-Class': 'com.StudyCafe_R.StudyCafe_R.App'
+		)
+	}
+}

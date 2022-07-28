@@ -48,14 +48,17 @@ public class Account {
 
     private boolean studyCreatedByEmail;
 
+    @Builder.Default
     private boolean studyCreatedByWeb = true;
 
     private boolean studyEnrollmentResultByEmail;
 
+    @Builder.Default
     private boolean studyEnrollmentResultByWeb = true;
 
     private boolean studyUpdatedByEmail;
 
+    @Builder.Default
     private boolean studyUpdatedByWeb = true;
     private LocalDateTime emailCheckTokenGeneratedAt;
 

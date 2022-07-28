@@ -20,6 +20,7 @@ public class Tag {
     private String title;
 
     @OneToMany(mappedBy = "tag",cascade = CascadeType.ALL)
+    @Builder.Default
     private Set<AccountTag> accountTagSet = new HashSet<>();
 
 }
