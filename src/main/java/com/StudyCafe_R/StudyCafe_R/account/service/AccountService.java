@@ -57,6 +57,7 @@ public class AccountService {
         simpleMailMessage.setText("/check-email-token?token=" + newAccount.getEmailCheckToken() + "&email=" + newAccount.getEmail());
 
         javaMailSender.send(simpleMailMessage);
+        accountRepository.save(newAccount);
     }
 
     //TODO password Authentication 이 정석적인 방법이 아니라 혼란을 야기할 수 있다.
