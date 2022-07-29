@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3316/test?serverTimezone=UTC&characterEncoding=UTF-8
-    username: root
-    password: 1234
+    url: ENC(ovJtTsfY4V5VX6xpsNvTfGe+02gxrnkGCU43kE8CEJT0/7EAL9DPza0xgbXU8VP0/cApFkmvP5ipC5AA6Dc4S12nhLBI8LV6xGWiTbzOjkGY+p53iEYNPA==)
+    username: ENC(PGxjfPEVEuIdY4+kKueKxw==)
+    password: ENC(72f54U69pEjV+mEYpIPiFQ==)
   jpa:
     hibernate:
       ddl-auto: update
@@ -11,6 +11,18 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: tonydevpc123@gmail.com
+    password: oirhttfuzgfsonyq
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
 
   thymeleaf:
     cache: false
@@ -23,3 +35,7 @@ logging:
           descriptor:
             sql:
               org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
