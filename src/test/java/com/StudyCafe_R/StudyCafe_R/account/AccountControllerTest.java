@@ -2,6 +2,8 @@ package com.StudyCafe_R.StudyCafe_R.account;
 
 import com.StudyCafe_R.StudyCafe_R.account.repository.AccountRepository;
 import com.StudyCafe_R.StudyCafe_R.domain.Account;
+import com.StudyCafe_R.StudyCafe_R.mail.EmailMessage;
+import com.StudyCafe_R.StudyCafe_R.mail.EmailService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +33,7 @@ class AccountControllerTest {
     @Autowired
     private AccountRepository accountRepository;
     @MockBean
-    private JavaMailSender javaMailSender;
+    private EmailService emailService;
 
 
     @DisplayName("인증 메일 확인 - 입력값 오류")
@@ -108,7 +110,7 @@ class AccountControllerTest {
         assertNotEquals(account.getPassword(),"12345678");
         assertNotNull(account.getEmailCheckToken());
 
-        then(javaMailSender).should().send(any(SimpleMailMessage.class));
+        then(emailService).should().sendEmail(any(EmailMessage.class));
     }
 
     @DisplayName("프로필뷰 테스트 예외")
