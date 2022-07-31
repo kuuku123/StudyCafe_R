@@ -3,6 +3,7 @@ package com.StudyCafe_R.StudyCafe_R.account.service;
 import com.StudyCafe_R.StudyCafe_R.account.SignUpForm;
 import com.StudyCafe_R.StudyCafe_R.account.UserAccount;
 import com.StudyCafe_R.StudyCafe_R.account.repository.AccountRepository;
+import com.StudyCafe_R.StudyCafe_R.config.AppProperties;
 import com.StudyCafe_R.StudyCafe_R.domain.*;
 import com.StudyCafe_R.StudyCafe_R.mail.EmailMessage;
 import com.StudyCafe_R.StudyCafe_R.mail.EmailService;
@@ -22,6 +23,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -42,6 +45,8 @@ public class AccountService {
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
 
+    private final TemplateEngine templateEngine;
+    private final AppProperties appProperties;
 
     public Account processNewAccount(SignUpForm signUpForm) {
 
@@ -59,10 +64,19 @@ public class AccountService {
 
     public void sendSignupConfirmEmail(Account newAccount) {
 
+        Context context = new Context();
+        context.setVariable("link","/check-email-token?token=" + newAccount.getEmailCheckToken() + "&email=" + newAccount.getEmail());
+        context.setVariable("nickname",newAccount.getNickname());
+        context.setVariable("linkName","이메일 인증하기");
+        context.setVariable("message","스터디 카페 서비스를 사용하려면 링크를 클릭하세요.");
+        context.setVariable("host",appProperties.getHost());
+
+        String message = templateEngine.process("email/simple-link", context);
+
         EmailMessage emailMessage = EmailMessage.builder()
                 .to(newAccount.getEmail())
                 .subject("스터디 카페 , 회원가입 인증")
-                .message("/check-email-token?token=" + newAccount.getEmailCheckToken() + "&email=" + newAccount.getEmail())
+                .message(message)
                 .build();
         emailService.sendEmail(emailMessage);
     }
@@ -103,11 +117,20 @@ public class AccountService {
 
     public void sendLoginLink(Account account) {
 
+        Context context = new Context();
+        context.setVariable("link","/login-by-email?token=" + account.getEmailCheckToken() + "&email=" + account.getEmail());
+        context.setVariable("nickname",account.getNickname());
+        context.setVariable("linkName","스터디 카페 로그인하기");
+        context.setVariable("message","로그인 하려면 링크를 클릭하세요.");
+        context.setVariable("host",appProperties.getHost());
+
+        String message = templateEngine.process("email/simple-link", context);
+
+
         EmailMessage emailMessage = EmailMessage.builder()
                 .to(account.getEmail())
                 .subject("스터디 카페 , 로그인 링크")
-                .message("/login-by-email?token=" + account.getEmailCheckToken() +
-                        "&email=" + account.getEmail())
+                .message(message)
                 .build();
         emailService.sendEmail(emailMessage);
     }

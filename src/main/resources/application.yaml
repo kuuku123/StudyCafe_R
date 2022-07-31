@@ -12,6 +12,10 @@ spring:
 
   thymeleaf:
     cache: false
+app:
+  host: http://localhost:8080
+
+
 logging:
   level:
     org:
