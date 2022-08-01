@@ -1,6 +1,6 @@
 package com.StudyCafe_R.StudyCafe_R.settings;
 
-import com.StudyCafe_R.StudyCafe_R.account.SignUpForm;
+import com.StudyCafe_R.StudyCafe_R.account.form.SignUpForm;
 import com.StudyCafe_R.StudyCafe_R.account.repository.AccountRepository;
 import com.StudyCafe_R.StudyCafe_R.account.service.AccountService;
 import com.StudyCafe_R.StudyCafe_R.domain.Account;
@@ -26,7 +26,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 
 import static com.StudyCafe_R.StudyCafe_R.settings.SettingsController.*;
 import static org.junit.jupiter.api.Assertions.*;

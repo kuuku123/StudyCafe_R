@@ -60,4 +60,19 @@ public class Study {
 
     private boolean useBanner;
 
+    public void addManager(AccountStudy accountStudy) {
+        managers.add(accountStudy);
+        accountStudy.setStudy(this);
+    }
+
+    public void removeManager(AccountStudy accountStudy) {
+        for (AccountStudy manager : managers) {
+            Account account1 = manager.getAccount();
+            if (account1 == accountStudy.getAccount()) {
+                managers.remove(manager);
+                accountStudy.setStudy(null);
+                break;
+            }
+        }
+    }
 }

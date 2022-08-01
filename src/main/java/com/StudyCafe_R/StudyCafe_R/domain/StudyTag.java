@@ -1,14 +1,13 @@
 package com.StudyCafe_R.StudyCafe_R.domain;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "study_tag")
 @Getter @Setter @EqualsAndHashCode(of = "id")
+@Builder @NoArgsConstructor @AllArgsConstructor
 public class StudyTag {
 
     @Id @GeneratedValue

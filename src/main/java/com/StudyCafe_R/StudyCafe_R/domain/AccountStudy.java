@@ -1,14 +1,15 @@
 package com.StudyCafe_R.StudyCafe_R.domain;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "account_study")
 @Getter @Setter @EqualsAndHashCode(of = "id")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AccountStudy {
 
     @Id @GeneratedValue

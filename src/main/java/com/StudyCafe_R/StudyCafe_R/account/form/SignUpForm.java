@@ -1,4 +1,4 @@
-package com.StudyCafe_R.StudyCafe_R.account;
+package com.StudyCafe_R.StudyCafe_R.account.form;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
