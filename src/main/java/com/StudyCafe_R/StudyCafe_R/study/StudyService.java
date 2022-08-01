@@ -7,12 +7,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class StudyService {
 
     private final StudyRepository studyRepository;
+    private final EntityManager entityManager;
 
     public Study createNewStudy(Study study, Account account) {
         Study newStudy = studyRepository.save(study);
