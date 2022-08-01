@@ -13,7 +13,7 @@ import java.util.Set;
 public class Tag {
 
     @Id @GeneratedValue
-    @Column(name = "TAG_ID")
+    @Column(name = "tag_id")
     private Long id;
 
     @Column(unique = true, nullable = false)
@@ -22,5 +22,9 @@ public class Tag {
     @OneToMany(mappedBy = "tag",cascade = CascadeType.ALL)
     @Builder.Default
     private Set<AccountTag> accountTagSet = new HashSet<>();
+
+    @OneToMany(mappedBy = "tag" , cascade = CascadeType.ALL)
+    @Builder.Default
+    private Set<StudyTag> studyTagSet = new HashSet<>();
 
 }

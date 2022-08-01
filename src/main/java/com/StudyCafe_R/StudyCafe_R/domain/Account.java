@@ -16,7 +16,7 @@ import java.util.UUID;
 public class Account {
 
     @Id @GeneratedValue
-    @Column(name= "ACCOUNT_ID")
+    @Column(name= "account_id")
     private Long id;
 
     @Column(unique = true)
@@ -69,6 +69,16 @@ public class Account {
     @OneToMany(mappedBy = "account",cascade = CascadeType.ALL)
     @Builder.Default
     private Set<AccountZone> accountZoneSet = new HashSet<>();
+
+    @OneToMany(mappedBy = "account",cascade = CascadeType.ALL)
+    @Builder.Default
+    private Set<AccountStudy> managers = new HashSet<>();
+
+
+    @OneToMany(mappedBy = "account",cascade = CascadeType.ALL)
+    @Builder.Default
+    private Set<AccountStudy> members = new HashSet<>();
+
 
 
     public void generateEmailCheckToken() {

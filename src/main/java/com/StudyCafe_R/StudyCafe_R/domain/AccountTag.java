@@ -15,11 +15,11 @@ public class AccountTag {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="ACCOUNT_ID")
+    @JoinColumn(name="account_id")
     private Account account;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TAG_ID")
+    @JoinColumn(name = "tag_id")
     private Tag tag;
 
 }

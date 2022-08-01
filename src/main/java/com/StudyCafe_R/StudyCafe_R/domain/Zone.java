@@ -13,7 +13,7 @@ import java.util.Set;
 public class Zone {
 
     @Id @GeneratedValue
-    @Column(name = "ZONE_ID")
+    @Column(name = "zone_id")
     private Long id;
 
     @Column(nullable = false)
@@ -28,6 +28,10 @@ public class Zone {
     @OneToMany(mappedBy = "zone",cascade = CascadeType.ALL)
     @Builder.Default
     private Set<AccountZone> accountZoneSet = new HashSet<>();
+
+    @OneToMany(mappedBy = "zone", cascade = CascadeType.ALL)
+    @Builder.Default
+    private Set<StudyZone> studyZoneSet = new HashSet<>();
 
     @Override
     public String toString() {
