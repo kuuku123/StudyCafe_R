@@ -98,7 +98,7 @@ class StudyControllerTest {
                 .andExpect(model().attributeExists("studyForm"))
                 .andExpect(model().attributeExists("account"));
 
-        Study study = studyRepository.findByPath("test-path");
+        Study study = studyRepository.findByPath("wrong path");
         assertNull(study);
     }
 
