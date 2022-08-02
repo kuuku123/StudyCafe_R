@@ -29,6 +29,7 @@ public class AccountController {
         webDataBinder.addValidators(signUpFormValidator);
     }
 
+
     @GetMapping("/sign-up")
     public String signUpForm(Model model) {
         model.addAttribute(new SignUpForm());

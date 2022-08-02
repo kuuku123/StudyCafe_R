@@ -2,7 +2,6 @@ package com.StudyCafe_R.StudyCafe_R.domain;
 
 import com.StudyCafe_R.StudyCafe_R.account.UserAccount;
 import lombok.*;
-import net.bytebuddy.build.HashCodeAndEqualsPlugin;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -26,11 +25,11 @@ public class Study {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "study",cascade = CascadeType.ALL)
     @Builder.Default
-    private Set<AccountStudy> managers = new HashSet<>();
+    private Set<AccountStudyManager> managers = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "study",cascade = CascadeType.ALL)
     @Builder.Default
-    private Set<AccountStudy> members = new HashSet<>();
+    private Set<AccountStudyMembers> members = new HashSet<>();
 
     @Column(unique = true)
     private String path;
@@ -67,17 +66,17 @@ public class Study {
 
     private boolean useBanner;
 
-    public void addManager(AccountStudy accountStudy) {
-        managers.add(accountStudy);
-        accountStudy.setStudy(this);
+    public void addManager(AccountStudyManager accountStudyManager) {
+        managers.add(accountStudyManager);
+        accountStudyManager.setStudy(this);
     }
 
-    public void removeManager(AccountStudy accountStudy) {
-        for (AccountStudy manager : managers) {
+    public void removeManager(AccountStudyManager accountStudyManager) {
+        for (AccountStudyManager manager : managers) {
             Account account1 = manager.getAccount();
-            if (doesAccountExist(account1, accountStudy.getAccount())) {
+            if (doesAccountExist(account1, accountStudyManager.getAccount())) {
                 managers.remove(manager);
-                accountStudy.setStudy(null);
+                accountStudyManager.setStudy(null);
                 break;
             }
         }
@@ -85,17 +84,17 @@ public class Study {
 
     public boolean isJoinable(UserAccount userAccount) {
         return this.isPublished() && this.isRecruiting() && !this.members.stream()
-                .anyMatch(accountStudy -> doesAccountExist(accountStudy.getAccount(), userAccount.getAccount()));
+                .anyMatch(accountStudyManager -> doesAccountExist(accountStudyManager.getAccount(), userAccount.getAccount()));
     }
 
     public boolean isMember(UserAccount userAccount) {
         return this.members.stream()
-                .anyMatch(accountStudy -> doesAccountExist(accountStudy.getAccount(), userAccount.getAccount()));
+                .anyMatch(accountStudyManager -> doesAccountExist(accountStudyManager.getAccount(), userAccount.getAccount()));
     }
 
     public boolean isManager(UserAccount userAccount) {
         return this.managers.stream()
-                .anyMatch(accountStudy -> doesAccountExist(accountStudy.getAccount(), userAccount.getAccount()));
+                .anyMatch(accountStudyManager -> doesAccountExist(accountStudyManager.getAccount(), userAccount.getAccount()));
     }
     private boolean doesAccountExist(Account accountStudy, Account userAccount) {
         return accountStudy.getNickname().equals(userAccount.getNickname());

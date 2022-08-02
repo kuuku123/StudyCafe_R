@@ -5,12 +5,11 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "account_study")
 @Getter @Setter @EqualsAndHashCode(of = "id")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountStudy {
+public class AccountStudyMembers {
 
     @Id @GeneratedValue
     private Long id;

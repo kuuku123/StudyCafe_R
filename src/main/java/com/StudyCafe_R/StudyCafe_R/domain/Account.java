@@ -1,7 +1,6 @@
 package com.StudyCafe_R.StudyCafe_R.domain;
 
 import lombok.*;
-import net.bytebuddy.asm.Advice;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -72,12 +71,12 @@ public class Account {
 
     @OneToMany(mappedBy = "account",cascade = CascadeType.ALL)
     @Builder.Default
-    private Set<AccountStudy> managers = new HashSet<>();
+    private Set<AccountStudyManager> managers = new HashSet<>();
 
 
     @OneToMany(mappedBy = "account",cascade = CascadeType.ALL)
     @Builder.Default
-    private Set<AccountStudy> members = new HashSet<>();
+    private Set<AccountStudyManager> members = new HashSet<>();
 
 
 
@@ -96,7 +95,8 @@ public class Account {
     }
 
     public boolean canSendConfirmationEmail() {
-        return this.emailCheckTokenGeneratedAt.isBefore(LocalDateTime.now().minusHours(1));
+//        return this.emailCheckTokenGeneratedAt.isBefore(LocalDateTime.now().minusHours(1));
+        return true;
     }
 
     public void addAccountTag(AccountTag accountTag) {

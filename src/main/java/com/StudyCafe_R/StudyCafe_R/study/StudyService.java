@@ -1,7 +1,7 @@
 package com.StudyCafe_R.StudyCafe_R.study;
 
 import com.StudyCafe_R.StudyCafe_R.domain.Account;
-import com.StudyCafe_R.StudyCafe_R.domain.AccountStudy;
+import com.StudyCafe_R.StudyCafe_R.domain.AccountStudyManager;
 import com.StudyCafe_R.StudyCafe_R.domain.Study;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,12 +20,12 @@ public class StudyService {
     public Study createNewStudy(Study study, Account account) {
         Study newStudy = studyRepository.save(study);
 
-        AccountStudy accountStudy = AccountStudy.builder()
+        AccountStudyManager accountStudyManager = AccountStudyManager.builder()
                 .account(account)
                 .study(study)
                 .build();
 
-        newStudy.addManager(accountStudy);
+        newStudy.addManager(accountStudyManager);
         return newStudy;
     }
 }
