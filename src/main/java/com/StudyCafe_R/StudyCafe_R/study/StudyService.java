@@ -3,7 +3,10 @@ package com.StudyCafe_R.StudyCafe_R.study;
 import com.StudyCafe_R.StudyCafe_R.domain.Account;
 import com.StudyCafe_R.StudyCafe_R.domain.AccountStudyManager;
 import com.StudyCafe_R.StudyCafe_R.domain.Study;
+import com.StudyCafe_R.StudyCafe_R.study.form.StudyDescriptionForm;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +18,7 @@ import javax.persistence.EntityManager;
 public class StudyService {
 
     private final StudyRepository studyRepository;
-    private final EntityManager entityManager;
+    private final ModelMapper modelMapper;
 
     public Study createNewStudy(Study study, Account account) {
         Study newStudy = studyRepository.save(study);
@@ -27,5 +30,26 @@ public class StudyService {
 
         newStudy.addManager(accountStudyManager);
         return newStudy;
+    }
+
+    public Study getStudyToUpdate(Account account, String path) {
+        Study study = getStudy(path);
+        if (!account.isManagerOf(study)){
+            throw new AccessDeniedException("해당 기능을 사용할 수 없습니다.");
+        }
+        return study;
+    }
+
+    public Study getStudy(String path) {
+        Study study = studyRepository.findByPath(path);
+        if (study == null) {
+            throw new IllegalArgumentException(path + "에 해당하는 스터디가 없습니다.");
+        }
+
+        return study;
+    }
+
+    public void updateStudyDescription(Study study, StudyDescriptionForm studyDescriptionForm) {
+        modelMapper.map(studyDescriptionForm,study);
     }
 }

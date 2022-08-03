@@ -130,4 +130,9 @@ public class Account {
             }
         }
     }
+
+    public boolean isManagerOf(Study study) {
+        return study.getManagers().stream()
+                .anyMatch(accountStudyManager -> accountStudyManager.getStudy() == study);
+    }
 }
