@@ -82,6 +82,26 @@ public class Study {
         }
     }
 
+    public void addMember(AccountStudyMembers accountStudyMembers) {
+        members.add(accountStudyMembers);
+        accountStudyMembers.setStudy(this);
+    }
+
+    public void removeMember(AccountStudyMembers accountStudyMembers) {
+        for (AccountStudyMembers member : members) {
+            Account account1 = member.getAccount();
+            if (doesAccountExist(account1, accountStudyMembers.getAccount())) {
+                managers.remove(member);
+                accountStudyMembers.setStudy(null);
+                break;
+            }
+        }
+    }
+
+    public String getImage() {
+        return image != null ? image : "/images/1.jpg";
+    }
+
     public boolean isJoinable(UserAccount userAccount) {
         return this.isPublished() && this.isRecruiting() && !this.members.stream()
                 .anyMatch(accountStudyManager -> doesAccountExist(accountStudyManager.getAccount(), userAccount.getAccount()));

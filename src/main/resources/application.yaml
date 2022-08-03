@@ -1,3 +1,8 @@
+
+server:
+  tomcat:
+    max-http-form-post-size: 5MB
+
 spring:
   profiles:
     active: local
