@@ -14,6 +14,15 @@ import java.util.Set;
         @NamedAttributeNode("managers"),
         @NamedAttributeNode("members")
 })
+@NamedEntityGraph(name = "Study.withTagsAndManagers",attributeNodes = {
+        @NamedAttributeNode("tags"),
+        @NamedAttributeNode("managers")
+})
+@NamedEntityGraph(name = "Study.withZonesAndManagers",attributeNodes = {
+        @NamedAttributeNode("zones"),
+        @NamedAttributeNode("managers")
+})
+
 @Entity
 @Getter @Setter @EqualsAndHashCode(of = "id")
 @Builder @AllArgsConstructor @NoArgsConstructor
@@ -44,11 +53,11 @@ public class Study {
     @Lob @Basic(fetch = FetchType.EAGER)
     private String image;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "study")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "study",cascade = CascadeType.ALL)
     @Builder.Default
     private Set<StudyTag> tags = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY ,mappedBy = "study")
+    @OneToMany(fetch = FetchType.LAZY ,mappedBy = "study",cascade = CascadeType.ALL)
     @Builder.Default
     private Set<StudyZone> zones = new HashSet<>();
 
@@ -70,16 +79,10 @@ public class Study {
         managers.add(accountStudyManager);
         accountStudyManager.setStudy(this);
     }
-
+//TODO check if i need to set accountStudyManager study to null
     public void removeManager(AccountStudyManager accountStudyManager) {
-        for (AccountStudyManager manager : managers) {
-            Account account1 = manager.getAccount();
-            if (doesAccountExist(account1, accountStudyManager.getAccount())) {
-                managers.remove(manager);
-                accountStudyManager.setStudy(null);
-                break;
-            }
-        }
+        managers.removeIf(asm -> asm.getAccount() == accountStudyManager.getAccount());
+//        accountStudyManager.setStudy(null);
     }
 
     public void addMember(AccountStudyMembers accountStudyMembers) {
@@ -88,14 +91,32 @@ public class Study {
     }
 
     public void removeMember(AccountStudyMembers accountStudyMembers) {
-        for (AccountStudyMembers member : members) {
-            Account account1 = member.getAccount();
-            if (doesAccountExist(account1, accountStudyMembers.getAccount())) {
-                managers.remove(member);
-                accountStudyMembers.setStudy(null);
-                break;
-            }
-        }
+        members.removeIf(asm -> asm.getAccount() == accountStudyMembers.getAccount());
+//        accountStudyMembers.setStudy(null);
+    }
+
+    public void addStudyTag(StudyTag studyTag) {
+        this.tags.add(studyTag);
+        studyTag.setStudy(this);
+    }
+
+    public void removeStudyTag(Tag tag) {
+        tags.stream()
+                        .filter(st -> st.getTag() == tag)
+                                .findAny().ifPresent(st -> st.setStudy(null));
+        tags.removeIf(st -> st.getTag() == tag);
+    }
+
+    public void addStudyZone(StudyZone studyZone) {
+        this.zones.add(studyZone);
+        studyZone.setStudy(this);
+    }
+
+    public void removeStudyZone(Zone zone) {
+        zones.stream()
+                        .filter(sz -> sz.getZone() == zone)
+                                .findAny().ifPresent(sz -> sz.setStudy(null));
+        zones.removeIf(sz -> sz.getZone() == zone);
     }
 
     public String getImage() {

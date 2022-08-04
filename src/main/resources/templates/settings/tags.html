@@ -28,48 +28,7 @@
     </div>
   </div>
 </div>
-<script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
 <script th:replace="fragments.html :: ajax-csrf-header"></script>
-<script type="application/javascript">
-  $(function () {
-    function tagRequest(url, tagTitle) {
-      $.ajax({
-        dataType: "json",
-        autocomplete: {
-          enabled: true,
-          rightKey: true,
-        },
-        contentType: "application/json; charset=utf-8",
-        method: "POST",
-        url: "/settings/tags" + url,
-        data: JSON.stringify({'tagTitle': tagTitle})
-      }).done(function (data, status) {
-        console.log("${data} and status is ${status}");
-      });
-    }
-
-    function onAdd(e) {
-      tagRequest("/add", e.detail.data.value);
-    }
-
-    function onRemove(e) {
-      tagRequest("/remove", e.detail.data.value);
-    }
-
-    var input = document.querySelector('input[name=tags-outside]')
-// init Tagify script on the above inputs
-    var tagify = new Tagify(input, {
-      whitelist: JSON.parse(document.querySelector("#whitelist").textContent),
-      dropdown: {
-        position: "input",
-        enabled : 0 // always opens dropdown when input gets focus
-      }
-    })
-
-    tagify.on("add", onAdd);
-    tagify.on("remove", onRemove);
-
-  });
-</script>
+<script th:replace="fragments.html :: update-tags (baseUrl ='/settings/tags')"></script>
 </body>
 </html>

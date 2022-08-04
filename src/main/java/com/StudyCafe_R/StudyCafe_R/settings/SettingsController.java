@@ -6,7 +6,10 @@ import com.StudyCafe_R.StudyCafe_R.domain.*;
 import com.StudyCafe_R.StudyCafe_R.settings.form.*;
 import com.StudyCafe_R.StudyCafe_R.settings.validator.NicknameValidator;
 import com.StudyCafe_R.StudyCafe_R.settings.validator.PasswordFormValidator;
+import com.StudyCafe_R.StudyCafe_R.tag.TagForm;
 import com.StudyCafe_R.StudyCafe_R.tag.TagRepository;
+import com.StudyCafe_R.StudyCafe_R.tag.TagService;
+import com.StudyCafe_R.StudyCafe_R.zone.ZoneForm;
 import com.StudyCafe_R.StudyCafe_R.zone.ZoneRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,8 +54,10 @@ public class SettingsController {
     private final ModelMapper modelMapper;
     private final NicknameValidator nicknameValidator;
     private final TagRepository tagRepository;
+    private final TagService tagService;
     private final ZoneRepository zoneRepository;
     private final ObjectMapper objectMapper;
+
 
     @InitBinder("passwordForm")
     public void passwordFormInitBinder(WebDataBinder webDataBinder) {
@@ -163,11 +168,8 @@ public class SettingsController {
     @PostMapping(TAGS + "/add")
     @ResponseBody
     public ResponseEntity addTag(@CurrentAccount Account account, Model model, @RequestBody TagForm tagForm) {
-        String title = tagForm.getTagTitle();
-        Tag tag = tagRepository.findByTitle(title)
-                .orElseGet(() -> tagRepository.save(Tag.builder()
-                        .title(title)
-                        .build()));
+
+        Tag tag = tagService.findOrCreateNew(tagForm.getTagTitle());
         accountService.addTag(account,tag);
         return ResponseEntity.ok().build();
     }

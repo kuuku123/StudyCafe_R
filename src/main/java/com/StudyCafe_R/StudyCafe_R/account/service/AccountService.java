@@ -134,8 +134,13 @@ public class AccountService {
         AccountTag accountTag = AccountTag.builder()
                 .tag(tag)
                 .build();
-        accountRepository.findById(account.getId())
-                .ifPresent(a -> a.addAccountTag(accountTag));
+        Account repoAccount = accountRepository.findById(account.getId()).get();
+
+        boolean exist = repoAccount.getAccountTagSet().stream()
+                .anyMatch(at -> at.getTag() == tag);
+        if (!exist) {
+            repoAccount.addAccountTag(accountTag);
+        }
     }
 
     public Set<AccountTag> getTags(Account account) {
@@ -145,9 +150,8 @@ public class AccountService {
 
     public void removeTag(Account account, Tag tag) {
 
-        accountRepository.findById(account.getId())
-                .ifPresent(a -> a.removeAccountTag(tag));
-
+        Account repoAccount = accountRepository.findById(account.getId()).get();
+        repoAccount.removeAccountTag(tag);
 //        tagRepository.delete(tag);  // we want tag to be alive , later we can look AccountTag table and search for Tag that has no reference
     }
 
@@ -160,14 +164,18 @@ public class AccountService {
     public void addZone(Account account, Zone zone) {
 
         AccountZone accountZone = AccountZone.builder().zone(zone).build();
-        Optional<Account> byId = accountRepository.findById(account.getId());
+        Account repoAccount = accountRepository.findById(account.getId()).get();
 
-        byId.ifPresent(a -> a.addAccountZone(accountZone));
+        boolean exist = repoAccount.getAccountZoneSet().stream()
+                .anyMatch(az -> az.getZone() == zone);
+        if(!exist) {
+            repoAccount.addAccountZone(accountZone);
+        }
     }
 
     public void removeZone(Account account, Zone zone) {
-        Optional<Account> byId = accountRepository.findById(account.getId());
-        byId.ifPresent(a -> a.removeAccountZone(zone));
+        accountRepository.findById(account.getId())
+                        .ifPresent(a -> a.removeAccountZone(zone));
     }
 
     public Account getAccount(String nickname) {

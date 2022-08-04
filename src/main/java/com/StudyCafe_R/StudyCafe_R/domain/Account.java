@@ -103,16 +103,12 @@ public class Account {
         this.accountTagSet.add(accountTag);
         accountTag.setAccount(this);
     }
-
+//TODO check if i need to set accountTag account to null
     public void removeAccountTag(Tag tag) {
-        for (AccountTag accountTag : this.accountTagSet) {
-            Tag tag1 = accountTag.getTag();
-            if (tag1.getTitle().equals(tag.getTitle())) {
-                accountTagSet.remove(accountTag);
-                accountTag.setAccount(null);
-                break;
-            }
-        }
+        accountTagSet.stream()
+                        .filter(at -> at.getTag() == tag)
+                                .findAny().ifPresent(at -> at.setAccount(null));
+        accountTagSet.removeIf(accountTag -> accountTag.getTag() == tag);
     }
 
     public void addAccountZone(AccountZone accountZone) {
@@ -121,14 +117,10 @@ public class Account {
     }
 
     public void removeAccountZone(Zone zone) {
-        for (AccountZone accountZone : this.accountZoneSet) {
-            Zone zone1 = accountZone.getZone();
-            if (zone1.equals(zone)) {
-                accountZoneSet.remove(accountZone);
-                accountZone.setAccount(null);
-                break;
-            }
-        }
+        accountZoneSet.stream()
+                        .filter(az -> az.getZone() == zone)
+                                .findAny().ifPresent(az -> az.setAccount(null));
+        accountZoneSet.removeIf(accountZone -> accountZone.getZone() == zone);
     }
 
     public boolean isManagerOf(Study study) {

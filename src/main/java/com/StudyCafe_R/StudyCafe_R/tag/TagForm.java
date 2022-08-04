@@ -1,4 +1,4 @@
-package com.StudyCafe_R.StudyCafe_R.settings.form;
+package com.StudyCafe_R.StudyCafe_R.tag;
 
 import lombok.Data;
 

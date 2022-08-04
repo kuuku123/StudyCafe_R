@@ -228,13 +228,13 @@
       <p>
                 <span th:each="tag: ${study.tags}"
                       class="font-weight-light text-monospace badge badge-pill badge-info mr-3">
-                    <a th:href="@{'/search/tag/' + ${tag.title}}" class="text-decoration-none text-white">
-                        <i class="fa fa-tag"></i> <span th:text="${tag.title}">Tag</span>
+                    <a th:href="@{'/search/tag/' + ${tag.tag.title}}" class="text-decoration-none text-white">
+                        <i class="fa fa-tag"></i> <span th:text="${tag.tag.title}">Tag</span>
                     </a>
                 </span>
         <span th:each="zone: ${study.zones}" class="font-weight-light text-monospace badge badge-primary mr-3">
-                    <a th:href="@{'/search/zone/' + ${zone.id}}" class="text-decoration-none text-white">
-                        <i class="fa fa-globe"></i> <span th:text="${zone.localNameOfCity}">City</span>
+                    <a th:href="@{'/search/zone/' + ${zone.zone.id}}" class="text-decoration-none text-white">
+                        <i class="fa fa-globe"></i> <span th:text="${zone.zone.localNameOfCity}">City</span>
                     </a>
                 </span>
       </p>
@@ -312,4 +312,96 @@
         $('[data-toggle="tooltip"]').tooltip()
     })
 </script>
+
+
+<div th:fragment="update-tags (baseUrl)">
+    <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
+    <script type="application/javascript">
+        $(function () {
+            function tagRequest(url, tagTitle) {
+                $.ajax({
+                    dataType: "json",
+                    autocomplete: {
+                        enabled: true,
+                        rightKey: true,
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    method: "POST",
+                    url: "[(${baseUrl})]" + url,
+                    data: JSON.stringify({'tagTitle': tagTitle})
+                }).done(function (data, status) {
+                    console.log("${data} and status is ${status}");
+                });
+            }
+
+            function onAdd(e) {
+                tagRequest("/add", e.detail.data.value);
+            }
+
+            function onRemove(e) {
+                tagRequest("/remove", e.detail.data.value);
+            }
+
+            var input = document.querySelector('input[name=tags-outside]')
+// init Tagify script on the above inputs
+            var tagify = new Tagify(input, {
+                whitelist: JSON.parse(document.querySelector("#whitelist").textContent),
+                dropdown: {
+                    position: "input",
+                    enabled : 0 // always opens dropdown when input gets focus
+                }
+            })
+
+            tagify.on("add", onAdd);
+            tagify.on("remove", onRemove);
+
+        });
+    </script>
+</div>
+
+<div th:fragment="update-zones (baseUrl)">
+    <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
+    <script type="application/javascript">
+        $(function () {
+            function tagRequest(url, zoneName) {
+                $.ajax({
+                    dataType: "json",
+                    autocomplete: {
+                        enabled: true,
+                        rightKey: true,
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    method: "POST",
+                    url: "[(${baseUrl})]" + url,
+                    data: JSON.stringify({'zoneName': zoneName})
+                }).done(function (data, status) {
+                    console.log("${data} and status is ${status}");
+                });
+            }
+
+            function onAdd(e) {
+                tagRequest("/add", e.detail.data.value);
+            }
+
+            function onRemove(e) {
+                tagRequest("/remove", e.detail.data.value);
+            }
+
+            var input = document.querySelector('input[name=tags-outside]')
+// init Tagify script on the above inputs
+            var tagify = new Tagify(input, {
+                whitelist: JSON.parse(document.querySelector("#whitelist").textContent),
+                dropdown: {
+                    position: "input",
+                    enabled : 0 // always opens dropdown when input gets focus
+                }
+            })
+
+            tagify.on("add", onAdd);
+            tagify.on("remove", onRemove);
+
+        });
+    </script>
+</div>
+
 </html>

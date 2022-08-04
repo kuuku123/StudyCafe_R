@@ -1,4 +1,4 @@
-package com.StudyCafe_R.StudyCafe_R.settings.form;
+package com.StudyCafe_R.StudyCafe_R.zone;
 
 import com.StudyCafe_R.StudyCafe_R.domain.Zone;
 import lombok.Data;
