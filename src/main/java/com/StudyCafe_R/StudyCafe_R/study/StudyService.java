@@ -3,13 +3,12 @@ package com.StudyCafe_R.StudyCafe_R.study;
 import com.StudyCafe_R.StudyCafe_R.domain.*;
 import com.StudyCafe_R.StudyCafe_R.study.form.StudyDescriptionForm;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.AbstractCondition;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import static com.StudyCafe_R.StudyCafe_R.study.form.StudyForm.VALID_PATH_PATTERN;
 
 @Service
 @RequiredArgsConstructor
@@ -98,16 +97,23 @@ public class StudyService {
     }
 
     public Study getStudyToUpdateTag(Account account, String path) {
-        Study study = studyRepository.findAccountWithTagsByPath(path);
+        Study study = studyRepository.findStudyWithTagsByPath(path);
         checkIfStudyExist(path,study);
         checkIfManager(account,study);
         return study;
     }
 
     public Study getStudyToUpdateZone(Account account, String path) {
-        Study study = studyRepository.findAccountWithZonesByPath(path);
+        Study study = studyRepository.findStudyWithZonesByPath(path);
         checkIfStudyExist(path,study);
         checkIfManager(account,study);
+        return study;
+    }
+
+    public Study getStudyToUpdateStatus(Account account, String path) {
+        Study study = studyRepository.findStudyWithManagersByPath(path);
+        checkIfStudyExist(path, study);
+        checkIfManager(account, study);
         return study;
     }
 
@@ -121,6 +127,41 @@ public class StudyService {
         if (study == null) {
             throw new IllegalArgumentException(path + "에 해당하는 스터디가 없습니다.");
         }
+    }
 
+    public void publish(Study study) {
+        study.publish();
+    }
+
+    public void close(Study study) {
+        study.close();
+    }
+
+    public void startRecruit(Study study) {
+        study.startRecruit();
+    }
+
+    public void stopRecruit(Study study) {
+        study.stopRecruit();
+    }
+
+    public boolean isValidPath(String newPath) {
+        if (!newPath.matches(VALID_PATH_PATTERN)) {
+            return false;
+        }
+
+        return !studyRepository.existsByPath(newPath);
+    }
+
+    public void updateStudyPath(Study study, String newPath) {
+        study.setPath(newPath);
+    }
+
+    public boolean isValidTitle(String newTitle) {
+        return newTitle.length() <= 50;
+    }
+
+    public void updateStudyTitle(Study study, String newTitle) {
+        study.setTitle(newTitle);
     }
 }
