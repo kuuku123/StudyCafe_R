@@ -106,9 +106,9 @@ public class Account {
 //TODO check if i need to set accountTag account to null
     public void removeAccountTag(Tag tag) {
         accountTagSet.stream()
-                        .filter(at -> at.getTag() == tag)
+                        .filter(at -> at.getTag().equals(tag))
                                 .findAny().ifPresent(at -> at.setAccount(null));
-        accountTagSet.removeIf(accountTag -> accountTag.getTag() == tag);
+        accountTagSet.removeIf(accountTag -> accountTag.getTag().equals(tag));
     }
 
     public void addAccountZone(AccountZone accountZone) {
@@ -118,9 +118,9 @@ public class Account {
 
     public void removeAccountZone(Zone zone) {
         accountZoneSet.stream()
-                        .filter(az -> az.getZone() == zone)
+                        .filter(az -> az.getZone().equals(zone))
                                 .findAny().ifPresent(az -> az.setAccount(null));
-        accountZoneSet.removeIf(accountZone -> accountZone.getZone() == zone);
+        accountZoneSet.removeIf(accountZone -> accountZone.getZone().equals(zone));
     }
 
     public boolean isManagerOf(Study study) {

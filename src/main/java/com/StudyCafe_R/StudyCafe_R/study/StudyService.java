@@ -172,4 +172,16 @@ public class StudyService {
             throw new IllegalArgumentException("스터디를 삭제할 수 없습니다.");
         }
     }
+
+    public void addMember(Study study, Account account) {
+        AccountStudyMembers member = AccountStudyMembers.builder()
+                .account(account)
+                .study(study)
+                .build();
+        study.addMember(member);
+    }
+
+    public void removeMember(Study study, Account account) {
+        study.removeMember(account);
+    }
 }

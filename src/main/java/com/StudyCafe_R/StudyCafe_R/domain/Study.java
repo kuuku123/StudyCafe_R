@@ -4,6 +4,8 @@ import com.StudyCafe_R.StudyCafe_R.account.UserAccount;
 import lombok.*;
 
 import javax.persistence.*;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,7 +26,8 @@ import java.util.Set;
 })
 @NamedEntityGraph(name = "Study.withManagers", attributeNodes = {
         @NamedAttributeNode("managers")})
-
+@NamedEntityGraph(name = "Study.withMembers", attributeNodes = {
+        @NamedAttributeNode("members")})
 @Entity
 @Getter @Setter @EqualsAndHashCode(of = "id")
 @Builder @AllArgsConstructor @NoArgsConstructor
@@ -82,8 +85,11 @@ public class Study {
         accountStudyManager.setStudy(this);
     }
 //TODO check if i need to set accountStudyManager study to null
-    public void removeManager(AccountStudyManager accountStudyManager) {
-        managers.removeIf(asm -> asm.getAccount() == accountStudyManager.getAccount());
+    public void removeManager(Account account) {
+        managers.stream()
+                .filter(asm -> asm.getAccount().equals(account))
+                .findAny().ifPresent(asm -> asm.setStudy(null));
+        managers.removeIf(asm -> asm.getAccount().equals(account));
 //        accountStudyManager.setStudy(null);
     }
 
@@ -92,8 +98,11 @@ public class Study {
         accountStudyMembers.setStudy(this);
     }
 
-    public void removeMember(AccountStudyMembers accountStudyMembers) {
-        members.removeIf(asm -> asm.getAccount() == accountStudyMembers.getAccount());
+    public void removeMember(Account account) {
+        members.stream()
+                        .filter(asm -> asm.getAccount().equals(account))
+                                .findAny().ifPresent(asm -> asm.setStudy(null));
+        members.removeIf(asm -> asm.getAccount().equals(account));
 //        accountStudyMembers.setStudy(null);
     }
 
@@ -104,9 +113,9 @@ public class Study {
 
     public void removeStudyTag(Tag tag) {
         tags.stream()
-                        .filter(st -> st.getTag() == tag)
+                        .filter(st -> st.getTag().equals(tag))
                                 .findAny().ifPresent(st -> st.setStudy(null));
-        tags.removeIf(st -> st.getTag() == tag);
+        tags.removeIf(st -> st.getTag().equals(tag));
     }
 
     public void addStudyZone(StudyZone studyZone) {
@@ -116,9 +125,9 @@ public class Study {
 
     public void removeStudyZone(Zone zone) {
         zones.stream()
-                        .filter(sz -> sz.getZone() == zone)
+                        .filter(sz -> sz.getZone().equals(zone))
                                 .findAny().ifPresent(sz -> sz.setStudy(null));
-        zones.removeIf(sz -> sz.getZone() == zone);
+        zones.removeIf(sz -> sz.getZone().equals(zone));
     }
 
     public String getImage() {
@@ -187,6 +196,10 @@ public class Study {
 
     public boolean isRemovable() {
         return !this.published; // TODO 모임을 했던 스터디는 삭제할 수 없다.
+    }
+
+    public String getEncodedPath() {
+        return URLEncoder.encode(this.path, StandardCharsets.UTF_8);
     }
 
 }
