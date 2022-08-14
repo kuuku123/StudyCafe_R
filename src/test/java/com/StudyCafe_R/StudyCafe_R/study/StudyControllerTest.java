@@ -29,13 +29,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 class StudyControllerTest {
 
     @Autowired
-    MockMvc mockMvc;
-    @Autowired StudyService studyService;
-    @Autowired StudyRepository studyRepository;
+    protected MockMvc mockMvc;
+    @Autowired protected StudyService studyService;
+    @Autowired protected StudyRepository studyRepository;
     @Autowired
-    AccountRepository accountRepository;
+    protected AccountRepository accountRepository;
     @Autowired
-    AccountService accountService;
+    protected AccountService accountService;
 
     @BeforeEach
     void beforeEach() {
@@ -121,5 +121,54 @@ class StudyControllerTest {
                 .andExpect(model().attributeExists("study"));
     }
 
+    @Test
+    @WithUserDetails(value = "tony",setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("스터디 가입")
+    void joinStudy() throws Exception {
+        Account tony = createAccount("tony-test");
+        Study study = createStudy("test-study", tony);
+
+        mockMvc.perform(get("/study/" + study.getEncodedPath() + "/join"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/study/" + study.getEncodedPath() + "/members"));
+
+        Account repoTony = accountRepository.findByNickname("tony");
+        assertTrue(study.getMembers().stream()
+                .anyMatch(accountStudyMembers -> accountStudyMembers.getAccount().equals(repoTony)));
+    }
+
+    @Test
+    @WithUserDetails(value = "tony",setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("스터디 탈퇴")
+    void leaveStudy() throws Exception {
+        Account tony = createAccount("tony-test");
+        Study study = createStudy("test-study", tony);
+
+        Account repoTony = accountRepository.findByNickname("tony");
+        studyService.addMember(study,repoTony);
+
+        mockMvc.perform(get("/study/" + study.getEncodedPath() + "/leave"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/study/" + study.getEncodedPath() + "/members"));
+
+        assertFalse(study.getMembers().stream()
+                .anyMatch(accountStudyMembers -> accountStudyMembers.getAccount().equals(repoTony)));
+    }
+
+
+    protected Study createStudy(String path, Account manager) {
+        Study study = new Study();
+        study.setPath(path);
+        studyService.createNewStudy(study,manager);
+        return study;
+    }
+
+    protected Account createAccount(String nickname) {
+        Account tony = new Account();
+        tony.setNickname(nickname);
+        tony.setEmail(nickname + "@email.com");
+        accountRepository.save(tony);
+        return tony;
+    }
 
 }
