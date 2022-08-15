@@ -1,6 +1,7 @@
 package com.StudyCafe_R.StudyCafe_R.domain;
 
 import lombok.*;
+import org.hibernate.event.internal.EntityCopyAllowedLoggedObserver;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -78,6 +79,13 @@ public class Account {
     @Builder.Default
     private Set<AccountStudyManager> members = new HashSet<>();
 
+    @OneToMany(mappedBy = "createdBy",cascade = CascadeType.ALL)
+    @Builder.Default
+    private Set<Event> events = new HashSet<>();
+
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    @Builder.Default
+    private Set<Enrollment> enrollments = new HashSet<>();
 
 
     public void generateEmailCheckToken() {
