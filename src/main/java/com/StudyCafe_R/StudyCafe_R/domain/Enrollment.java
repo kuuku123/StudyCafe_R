@@ -14,7 +14,7 @@ public class Enrollment {
     @Id @GeneratedValue
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id")
+    @JoinColumn(name = "study_event_id")
     private Event event;
 
     @ManyToOne(fetch = FetchType.LAZY)

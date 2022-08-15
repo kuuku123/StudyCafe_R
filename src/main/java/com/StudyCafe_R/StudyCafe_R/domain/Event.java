@@ -13,7 +13,7 @@ import java.util.List;
 public class Event {
 
     @Id @GeneratedValue
-    @Column(name = "event_id")
+    @Column(name = "study_event_id")
     private Long id;
 
 
