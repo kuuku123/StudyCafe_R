@@ -1,8 +1,11 @@
 package com.StudyCafe_R.StudyCafe_R.domain;
 
+import com.StudyCafe_R.StudyCafe_R.account.UserAccount;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import net.bytebuddy.asm.Advice;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -51,5 +54,37 @@ public class Event {
 
     @Enumerated(EnumType.STRING)
     private EventType eventType;
+
+    public boolean isEnrollPossibleFor(UserAccount userAccount) {
+        return isNotClosed() && !isAlreadyEnrolled(userAccount);
+    }
+
+    public boolean isDisEnrollPossibleFor(UserAccount userAccount) {
+        return isNotClosed() && isAlreadyEnrolled(userAccount);
+    }
+
+    public boolean isNotClosed() {
+        return this.endEnrollmentDateTime.isAfter(LocalDateTime.now());
+    }
+
+    public boolean isAttended(UserAccount userAccount) {
+        Account account = userAccount.getAccount();
+        for (Enrollment enrollment : enrollments) {
+            if(enrollment.getAccount().equals(account) && enrollment.isAttended()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isAlreadyEnrolled(UserAccount userAccount) {
+        Account account = userAccount.getAccount();
+        for (Enrollment enrollment : enrollments) {
+            if(enrollment.getAccount().equals(account)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }
