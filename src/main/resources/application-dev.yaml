@@ -24,7 +24,10 @@ spring:
           timeout: 5000
           starttls:
             enable: true
-
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
   thymeleaf:
     cache: false
 logging:
