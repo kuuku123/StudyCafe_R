@@ -10,6 +10,7 @@ import com.StudyCafe_R.StudyCafe_R.study.StudyRepository;
 import com.StudyCafe_R.StudyCafe_R.study.StudyService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -82,13 +83,46 @@ public class EventController {
         events.forEach(e -> {
             if (e.getEndDateTime().isBefore(LocalDateTime.now())) {
                 oldEvents.add(e);
-            }
-            else {
+            } else {
                 newEvents.add(e);
             }
         });
-        model.addAttribute("newEvents",newEvents);
-        model.addAttribute("oldEvents",oldEvents);
+        model.addAttribute("newEvents", newEvents);
+        model.addAttribute("oldEvents", oldEvents);
         return "study/events";
     }
+
+    @GetMapping("/events/{id}/edit")
+    public String updateEventForm(@CurrentAccount Account account, @PathVariable String path, @PathVariable Long id, Model model) {
+        Study study = studyService.getStudyToUpdate(account, path);
+        Event event = eventRepository.findById(id).orElseThrow();
+
+        model.addAttribute(study);
+        model.addAttribute(account);
+        model.addAttribute(event);
+        model.addAttribute(modelMapper.map(event, EventForm.class));
+        return "event/update-form";
+    }
+
+    @PostMapping("/events/{id}/edit")
+    public String updateEventSubmit(@CurrentAccount Account account, @PathVariable String path,
+                                    @PathVariable Long id, @Valid EventForm eventForm, Errors errors,Model model) {
+        Study study = studyService.getStudyToUpdate(account, path);
+        Event event = eventRepository.findById(id).orElseThrow();
+        eventForm.setEventType(event.getEventType());
+        eventValidator.validateUpdateForm(eventForm,event,errors);
+
+        if(errors.hasErrors()) {
+            model.addAttribute(account);
+            model.addAttribute(study);
+            model.addAttribute(event);
+            return "event/update-form";
+        }
+
+        eventService.updateEvent(event,eventForm);
+        return "redirect:/study/" + study.getEncodedPath() + "/events/" + event.getId();
+
+    }
 }
+
+

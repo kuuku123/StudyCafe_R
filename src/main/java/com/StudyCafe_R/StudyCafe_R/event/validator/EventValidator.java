@@ -1,5 +1,6 @@
 package com.StudyCafe_R.StudyCafe_R.event.validator;
 
+import com.StudyCafe_R.StudyCafe_R.domain.Event;
 import com.StudyCafe_R.StudyCafe_R.event.form.EventForm;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -44,5 +45,11 @@ public class EventValidator implements Validator {
 
     private boolean isNotValidEndDateTime(EventForm eventForm) {
         return eventForm.getEndDateTime().isBefore(eventForm.getStartDateTime()) || eventForm.getEndDateTime().isBefore(eventForm.getEndEnrollmentDateTime());
+    }
+
+    public void validateUpdateForm(EventForm eventForm, Event event, Errors errors) {
+        if (eventForm.getLimitOfEnrollments() < event.getNumberOfAcceptedEnrollments()) {
+            errors.rejectValue("limitOfEnrollments","wrong.value","확인된 참가 신청보다 모집 인원수가 더 커야합니다.");
+        }
     }
 }
