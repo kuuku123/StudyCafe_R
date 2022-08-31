@@ -1,5 +1,7 @@
 package com.StudyCafe_R.StudyCafe_R.modules.study;
 
+import com.StudyCafe_R.StudyCafe_R.infra.MockMvcTest;
+import com.StudyCafe_R.StudyCafe_R.modules.account.AccountFactory;
 import com.StudyCafe_R.StudyCafe_R.modules.account.form.SignUpForm;
 import com.StudyCafe_R.StudyCafe_R.modules.account.repository.AccountRepository;
 import com.StudyCafe_R.StudyCafe_R.modules.account.service.AccountService;
@@ -25,19 +27,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
-@Transactional
-@SpringBootTest
-@AutoConfigureMockMvc
+@MockMvcTest
 public class StudyControllerTest {
 
-    @Autowired
-    protected MockMvc mockMvc;
-    @Autowired protected StudyService studyService;
-    @Autowired protected StudyRepository studyRepository;
-    @Autowired
-    protected AccountRepository accountRepository;
-    @Autowired
-    protected AccountService accountService;
+    @Autowired MockMvc mockMvc;
+    @Autowired StudyService studyService;
+    @Autowired StudyRepository studyRepository;
+    @Autowired AccountRepository accountRepository;
+    @Autowired AccountService accountService;
+    @Autowired AccountFactory accountFactory;
+    @Autowired StudyFactory studyFactory;
 
     @BeforeEach
     void beforeEach() {
@@ -127,8 +126,8 @@ public class StudyControllerTest {
     @WithUserDetails(value = "tony",setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @DisplayName("스터디 가입")
     void joinStudy() throws Exception {
-        Account tony = createAccount("tony-test");
-        Study study = createStudy("test-study", tony);
+        Account tony = accountFactory.createAccount("tony-test");
+        Study study = studyFactory.createStudy("test-study", tony);
 
         mockMvc.perform(get("/study/" + study.getEncodedPath() + "/join"))
                 .andExpect(status().is3xxRedirection())
@@ -143,8 +142,8 @@ public class StudyControllerTest {
     @WithUserDetails(value = "tony",setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @DisplayName("스터디 탈퇴")
     void leaveStudy() throws Exception {
-        Account tony = createAccount("tony-test");
-        Study study = createStudy("test-study", tony);
+        Account tony = accountFactory.createAccount("tony-test");
+        Study study = studyFactory.createStudy("test-study", tony);
 
         Account repoTony = accountRepository.findByNickname("tony");
         studyService.addMember(study,repoTony);
@@ -155,22 +154,6 @@ public class StudyControllerTest {
 
         assertFalse(study.getMembers().stream()
                 .anyMatch(accountStudyMembers -> accountStudyMembers.getAccount().equals(repoTony)));
-    }
-
-
-    protected Study createStudy(String path, Account manager) {
-        Study study = new Study();
-        study.setPath(path);
-        studyService.createNewStudy(study,manager);
-        return study;
-    }
-
-    protected Account createAccount(String nickname) {
-        Account tony = new Account();
-        tony.setNickname(nickname);
-        tony.setEmail(nickname + "@email.com");
-        accountRepository.save(tony);
-        return tony;
     }
 
 }

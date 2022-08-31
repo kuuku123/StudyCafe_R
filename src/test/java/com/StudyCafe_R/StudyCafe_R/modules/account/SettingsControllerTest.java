@@ -1,5 +1,6 @@
 package com.StudyCafe_R.StudyCafe_R.modules.account;
 
+import com.StudyCafe_R.StudyCafe_R.infra.MockMvcTest;
 import com.StudyCafe_R.StudyCafe_R.modules.account.form.SignUpForm;
 import com.StudyCafe_R.StudyCafe_R.modules.account.repository.AccountRepository;
 import com.StudyCafe_R.StudyCafe_R.modules.account.service.AccountService;
@@ -34,9 +35,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@Transactional
+@MockMvcTest
 class SettingsControllerTest {
 
     @Autowired

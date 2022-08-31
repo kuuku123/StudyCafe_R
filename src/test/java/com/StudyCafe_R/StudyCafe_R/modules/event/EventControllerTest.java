@@ -1,17 +1,26 @@
 package com.StudyCafe_R.StudyCafe_R.modules.event;
 
+import com.StudyCafe_R.StudyCafe_R.infra.MockMvcTest;
+import com.StudyCafe_R.StudyCafe_R.modules.account.AccountFactory;
 import com.StudyCafe_R.StudyCafe_R.modules.account.domain.Account;
+import com.StudyCafe_R.StudyCafe_R.modules.account.form.SignUpForm;
+import com.StudyCafe_R.StudyCafe_R.modules.account.repository.AccountRepository;
+import com.StudyCafe_R.StudyCafe_R.modules.account.service.AccountService;
 import com.StudyCafe_R.StudyCafe_R.modules.event.EnrollmentRepository;
 import com.StudyCafe_R.StudyCafe_R.modules.event.EventService;
 import com.StudyCafe_R.StudyCafe_R.modules.event.domain.Event;
 import com.StudyCafe_R.StudyCafe_R.modules.event.domain.EventType;
+import com.StudyCafe_R.StudyCafe_R.modules.study.StudyFactory;
 import com.StudyCafe_R.StudyCafe_R.modules.study.domain.Study;
 import com.StudyCafe_R.StudyCafe_R.modules.study.StudyControllerTest;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 
@@ -21,19 +30,47 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class EventControllerTest extends StudyControllerTest {
+@MockMvcTest
+class EventControllerTest {
 
+    @Autowired
+    MockMvc mockMvc;
+
+    @Autowired
+    StudyFactory studyFactory;
+
+    @Autowired
+    AccountFactory accountFactory;
     @Autowired
     EventService eventService;
     @Autowired
     EnrollmentRepository enrollmentRepository;
 
+    @Autowired
+    AccountRepository accountRepository;
+
+    @Autowired
+    AccountService accountService;
+    @BeforeEach
+    void beforeEach() {
+        SignUpForm signUpForm = new SignUpForm();
+        signUpForm.setNickname("tony");
+        signUpForm.setEmail("tony@email.com");
+        signUpForm.setPassword("12345678");
+        accountService.processNewAccount(signUpForm);
+
+    }
+    @AfterEach
+    void afterEach() {
+        accountRepository.deleteAll();
+    }
+
     @Test
     @DisplayName("선착순 모임에 참가 신청 - 자동 수락")
     @WithUserDetails(value = "tony",setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void newEnrollment_to_FCFS_event_accepted() throws Exception {
-        Account tony = createAccount("test-tony");
-        Study study = createStudy("test-study", tony);
+        Account tony = accountFactory.createAccount("test-tony");
+        Study study = studyFactory.createStudy("test-study", tony);
         Event event = createEvent("test-event", EventType.FCFS, 2, study, tony);
 
         mockMvc.perform(post("/study/" + study.getEncodedPath() + "/events/" + event.getId() + "/enroll")
@@ -49,12 +86,12 @@ class EventControllerTest extends StudyControllerTest {
     @DisplayName("선착순 모임에 참가 신청 - 대기중 ( 이미 인원이 꽉차서 대기)")
     @WithUserDetails(value = "tony",setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void newEnrollment_to_FCFS_event_not_accepted() throws Exception {
-        Account tony = createAccount("test-tony");
-        Study study = createStudy("test-study", tony);
+        Account tony = accountFactory.createAccount("test-tony");
+        Study study = studyFactory.createStudy("test-study", tony);
         Event event = createEvent("test-event", EventType.FCFS, 2, study, tony);
 
-        Account may = createAccount("may");
-        Account june = createAccount("june");
+        Account may = accountFactory.createAccount("may");
+        Account june = accountFactory.createAccount("june");
         eventService.newEnrollment(event,may);
         eventService.newEnrollment(event,june);
 
@@ -73,9 +110,9 @@ class EventControllerTest extends StudyControllerTest {
     @WithUserDetails(value = "tony",setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void accepted_account_cancelEnrollment_to_FCFS_event_not_accepted() throws Exception {
         Account repoTony = accountRepository.findByNickname("tony");
-        Account tony = createAccount("test-tony");
-        Account may = createAccount("may");
-        Study study = createStudy("test-study", tony);
+        Account tony = accountFactory.createAccount("test-tony");
+        Account may = accountFactory.createAccount("may");
+        Study study = studyFactory.createStudy("test-study", tony);
         Event event = createEvent("test-event", EventType.FCFS, 2, study, tony);
 
         eventService.newEnrollment(event,may);
@@ -97,9 +134,9 @@ class EventControllerTest extends StudyControllerTest {
     @WithUserDetails(value = "tony",setupBefore = TestExecutionEvent.TEST_EXECUTION)
     void not_accepted_account_cacnelEnrollment_to_FCFS_event_not_accepted() throws Exception {
         Account repoTony = accountRepository.findByNickname("tony");
-        Account tony = createAccount("test-tony");
-        Account may = createAccount("may");
-        Study study = createStudy("test-study", tony);
+        Account tony = accountFactory.createAccount("test-tony");
+        Account may = accountFactory.createAccount("may");
+        Study study = studyFactory.createStudy("test-study", tony);
         Event event = createEvent("test-event", EventType.FCFS, 2, study, tony);
 
         eventService.newEnrollment(event,may);

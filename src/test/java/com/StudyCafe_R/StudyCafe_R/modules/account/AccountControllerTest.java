@@ -1,5 +1,6 @@
 package com.StudyCafe_R.StudyCafe_R.modules.account;
 
+import com.StudyCafe_R.StudyCafe_R.infra.MockMvcTest;
 import com.StudyCafe_R.StudyCafe_R.modules.account.repository.AccountRepository;
 import com.StudyCafe_R.StudyCafe_R.modules.account.domain.Account;
 import com.StudyCafe_R.StudyCafe_R.infra.mail.EmailMessage;
@@ -23,15 +24,12 @@ import static org.springframework.security.test.web.servlet.response.SecurityMoc
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@MockMvcTest
 class AccountControllerTest {
 
-    @Autowired private MockMvc mockMvc;
-    @Autowired
-    private AccountRepository accountRepository;
-    @MockBean
-    private EmailService emailService;
+    @Autowired  MockMvc mockMvc;
+    @Autowired AccountRepository accountRepository;
+    @MockBean EmailService emailService;
 
 
     @DisplayName("인증 메일 확인 - 입력값 오류")
