@@ -6,12 +6,14 @@ import com.StudyCafe_R.StudyCafe_R.modules.account.domain.AccountStudyMembers;
 import com.StudyCafe_R.StudyCafe_R.modules.study.domain.Study;
 import com.StudyCafe_R.StudyCafe_R.modules.study.domain.StudyTag;
 import com.StudyCafe_R.StudyCafe_R.modules.study.domain.StudyZone;
+import com.StudyCafe_R.StudyCafe_R.modules.study.event.StudyCreatedEvent;
 import com.StudyCafe_R.StudyCafe_R.modules.study.form.StudyDescriptionForm;
 import com.StudyCafe_R.StudyCafe_R.modules.study.form.StudyForm;
 import com.StudyCafe_R.StudyCafe_R.modules.tag.Tag;
 import com.StudyCafe_R.StudyCafe_R.modules.zone.Zone;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,7 @@ public class StudyService {
 
     private final StudyRepository studyRepository;
     private final ModelMapper modelMapper;
+    private final ApplicationEventPublisher eventPublisher;
 
     public Study createNewStudy(Study study, Account account) {
         Study newStudy = studyRepository.save(study);
@@ -33,6 +36,7 @@ public class StudyService {
                 .build();
 
         newStudy.addManager(accountStudyManager);
+        eventPublisher.publishEvent(new StudyCreatedEvent(study));
         return newStudy;
     }
 
