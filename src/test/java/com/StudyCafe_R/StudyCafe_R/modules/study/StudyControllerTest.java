@@ -1,5 +1,6 @@
 package com.StudyCafe_R.StudyCafe_R.modules.study;
 
+import com.StudyCafe_R.StudyCafe_R.infra.AbstractContainerBaseTest;
 import com.StudyCafe_R.StudyCafe_R.infra.MockMvcTest;
 import com.StudyCafe_R.StudyCafe_R.modules.account.AccountFactory;
 import com.StudyCafe_R.StudyCafe_R.modules.account.form.SignUpForm;
@@ -28,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @MockMvcTest
-public class StudyControllerTest {
+public class StudyControllerTest extends AbstractContainerBaseTest {
 
     @Autowired MockMvc mockMvc;
     @Autowired StudyService studyService;

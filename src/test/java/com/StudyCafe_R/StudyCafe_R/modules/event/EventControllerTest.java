@@ -1,5 +1,6 @@
 package com.StudyCafe_R.StudyCafe_R.modules.event;
 
+import com.StudyCafe_R.StudyCafe_R.infra.AbstractContainerBaseTest;
 import com.StudyCafe_R.StudyCafe_R.infra.MockMvcTest;
 import com.StudyCafe_R.StudyCafe_R.modules.account.AccountFactory;
 import com.StudyCafe_R.StudyCafe_R.modules.account.domain.Account;
@@ -31,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @MockMvcTest
-class EventControllerTest {
+class EventControllerTest extends AbstractContainerBaseTest {
 
     @Autowired
     MockMvc mockMvc;

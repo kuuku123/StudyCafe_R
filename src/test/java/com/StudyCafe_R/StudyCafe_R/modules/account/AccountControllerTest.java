@@ -1,5 +1,6 @@
 package com.StudyCafe_R.StudyCafe_R.modules.account;
 
+import com.StudyCafe_R.StudyCafe_R.infra.AbstractContainerBaseTest;
 import com.StudyCafe_R.StudyCafe_R.infra.MockMvcTest;
 import com.StudyCafe_R.StudyCafe_R.modules.account.repository.AccountRepository;
 import com.StudyCafe_R.StudyCafe_R.modules.account.domain.Account;
@@ -25,7 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockMvcTest
-class AccountControllerTest {
+class AccountControllerTest extends AbstractContainerBaseTest {
 
     @Autowired  MockMvc mockMvc;
     @Autowired AccountRepository accountRepository;
