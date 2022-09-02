@@ -1,8 +1,15 @@
+buildscript {
+	ext {
+		queryDslVersion = "5.0.0"
+	}
+}
+
 plugins {
 	id 'org.springframework.boot' version '2.7.1'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	id "com.github.node-gradle.node" version "3.1.0"
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'com.StudyCafe_R'
@@ -47,6 +54,9 @@ dependencies {
 	implementation platform('org.testcontainers:testcontainers-bom:1.17.3') //import bom
 	testImplementation "org.testcontainers:postgresql:1.17.3"
 
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+
 }
 
 tasks.named('test') {
@@ -82,4 +92,29 @@ jar {
 				'Main-Class': 'com.StudyCafe_R.StudyCafe_R.App'
 		)
 	}
+}
+/*
+querydsl설정 추가
+ */
+// querydsl에서 사용할 경로 설정
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+
+sourceSets {
+	main.java.srcDir querydslDir
+}
+
+compileQuerydsl {
+	options.annotationProcessorPath = configurations.querydsl
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+	querydsl.extendsFrom compileClasspath
 }

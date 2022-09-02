@@ -2,15 +2,12 @@ package com.StudyCafe_R.StudyCafe_R.modules.account;
 
 import com.StudyCafe_R.StudyCafe_R.infra.AbstractContainerBaseTest;
 import com.StudyCafe_R.StudyCafe_R.infra.MockMvcTest;
-import com.StudyCafe_R.StudyCafe_R.modules.account.repository.AccountRepository;
 import com.StudyCafe_R.StudyCafe_R.modules.account.domain.Account;
 import com.StudyCafe_R.StudyCafe_R.infra.mail.EmailMessage;
 import com.StudyCafe_R.StudyCafe_R.infra.mail.EmailService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;

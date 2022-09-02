@@ -3,7 +3,7 @@ package com.StudyCafe_R.StudyCafe_R.modules.main;
 import com.StudyCafe_R.StudyCafe_R.infra.AbstractContainerBaseTest;
 import com.StudyCafe_R.StudyCafe_R.infra.MockMvcTest;
 import com.StudyCafe_R.StudyCafe_R.modules.account.form.SignUpForm;
-import com.StudyCafe_R.StudyCafe_R.modules.account.repository.AccountRepository;
+import com.StudyCafe_R.StudyCafe_R.modules.account.AccountRepository;
 import com.StudyCafe_R.StudyCafe_R.modules.account.service.AccountService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,8 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;

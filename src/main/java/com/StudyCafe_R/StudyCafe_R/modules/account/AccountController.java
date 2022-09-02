@@ -1,7 +1,6 @@
 package com.StudyCafe_R.StudyCafe_R.modules.account;
 
 import com.StudyCafe_R.StudyCafe_R.modules.account.form.SignUpForm;
-import com.StudyCafe_R.StudyCafe_R.modules.account.repository.AccountRepository;
 import com.StudyCafe_R.StudyCafe_R.modules.account.service.AccountService;
 import com.StudyCafe_R.StudyCafe_R.modules.account.domain.Account;
 import lombok.RequiredArgsConstructor;

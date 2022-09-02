@@ -36,7 +36,6 @@ public class StudyService {
                 .build();
 
         newStudy.addManager(accountStudyManager);
-        eventPublisher.publishEvent(new StudyCreatedEvent(study));
         return newStudy;
     }
 
@@ -141,6 +140,7 @@ public class StudyService {
 
     public void publish(Study study) {
         study.publish();
+        eventPublisher.publishEvent(new StudyCreatedEvent(study));
     }
 
     public void close(Study study) {

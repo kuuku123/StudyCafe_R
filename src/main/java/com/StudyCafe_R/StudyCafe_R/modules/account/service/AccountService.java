@@ -5,7 +5,7 @@ import com.StudyCafe_R.StudyCafe_R.modules.account.domain.AccountTag;
 import com.StudyCafe_R.StudyCafe_R.modules.account.domain.AccountZone;
 import com.StudyCafe_R.StudyCafe_R.modules.account.form.SignUpForm;
 import com.StudyCafe_R.StudyCafe_R.modules.account.UserAccount;
-import com.StudyCafe_R.StudyCafe_R.modules.account.repository.AccountRepository;
+import com.StudyCafe_R.StudyCafe_R.modules.account.AccountRepository;
 import com.StudyCafe_R.StudyCafe_R.infra.config.AppProperties;
 import com.StudyCafe_R.StudyCafe_R.infra.mail.EmailMessage;
 import com.StudyCafe_R.StudyCafe_R.infra.mail.EmailService;

@@ -12,4 +12,5 @@ public class StudyCreatedEvent {
     public StudyCreatedEvent(Study study) {
         this.study = study;
     }
+
 }

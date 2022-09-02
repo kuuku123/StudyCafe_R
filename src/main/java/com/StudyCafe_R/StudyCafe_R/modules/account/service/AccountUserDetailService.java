@@ -1,7 +1,7 @@
 package com.StudyCafe_R.StudyCafe_R.modules.account.service;
 
 import com.StudyCafe_R.StudyCafe_R.modules.account.UserAccount;
-import com.StudyCafe_R.StudyCafe_R.modules.account.repository.AccountRepository;
+import com.StudyCafe_R.StudyCafe_R.modules.account.AccountRepository;
 import com.StudyCafe_R.StudyCafe_R.modules.account.domain.Account;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,7 +1,6 @@
 package com.StudyCafe_R.StudyCafe_R.modules.account;
 
 import com.StudyCafe_R.StudyCafe_R.modules.account.form.SignUpForm;
-import com.StudyCafe_R.StudyCafe_R.modules.account.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

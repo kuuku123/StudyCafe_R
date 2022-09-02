@@ -1,7 +1,7 @@
 package com.StudyCafe_R.StudyCafe_R.modules.main;
 
 import com.StudyCafe_R.StudyCafe_R.modules.account.CurrentAccount;
-import com.StudyCafe_R.StudyCafe_R.modules.account.repository.AccountRepository;
+import com.StudyCafe_R.StudyCafe_R.modules.account.AccountRepository;
 import com.StudyCafe_R.StudyCafe_R.modules.account.service.AccountService;
 import com.StudyCafe_R.StudyCafe_R.modules.account.domain.Account;
 import lombok.RequiredArgsConstructor;
