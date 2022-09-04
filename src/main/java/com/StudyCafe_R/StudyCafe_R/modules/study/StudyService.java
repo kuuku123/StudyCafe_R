@@ -7,6 +7,7 @@ import com.StudyCafe_R.StudyCafe_R.modules.study.domain.Study;
 import com.StudyCafe_R.StudyCafe_R.modules.study.domain.StudyTag;
 import com.StudyCafe_R.StudyCafe_R.modules.study.domain.StudyZone;
 import com.StudyCafe_R.StudyCafe_R.modules.study.event.StudyCreatedEvent;
+import com.StudyCafe_R.StudyCafe_R.modules.study.event.StudyUpdateEvent;
 import com.StudyCafe_R.StudyCafe_R.modules.study.form.StudyDescriptionForm;
 import com.StudyCafe_R.StudyCafe_R.modules.study.form.StudyForm;
 import com.StudyCafe_R.StudyCafe_R.modules.tag.Tag;
@@ -55,6 +56,7 @@ public class StudyService {
 
     public void updateStudyDescription(Study study, StudyDescriptionForm studyDescriptionForm) {
         modelMapper.map(studyDescriptionForm,study);
+        eventPublisher.publishEvent(new StudyUpdateEvent(study,"스터디 소개를 수정했습니다."));
     }
 
     public void updateStudyImage(Study study, String image) {
@@ -145,14 +147,17 @@ public class StudyService {
 
     public void close(Study study) {
         study.close();
+        eventPublisher.publishEvent(new StudyUpdateEvent(study,"스터디를 종료했습니다.."));
     }
 
     public void startRecruit(Study study) {
         study.startRecruit();
+        eventPublisher.publishEvent(new StudyUpdateEvent(study,"팀원 모집을 시작합니다."));
     }
 
     public void stopRecruit(Study study) {
         study.stopRecruit();
+        eventPublisher.publishEvent(new StudyUpdateEvent(study,"팀원 모집을 중단합니다."));
     }
 
     public boolean isValidPath(String newPath) {

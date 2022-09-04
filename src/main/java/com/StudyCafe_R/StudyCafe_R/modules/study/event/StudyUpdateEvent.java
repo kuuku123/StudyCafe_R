@@ -7,12 +7,9 @@ import org.springframework.context.ApplicationEvent;
 
 @Getter
 @RequiredArgsConstructor
-public class StudyCreatedEvent {
+public class StudyUpdateEvent {
 
-    private Study study;
-
-    public StudyCreatedEvent(Study study) {
-        this.study = study;
-    }
+    private final Study study;
+    private final String message;
 
 }
