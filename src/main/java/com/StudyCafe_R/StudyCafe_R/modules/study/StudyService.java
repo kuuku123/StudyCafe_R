@@ -11,8 +11,10 @@ import com.StudyCafe_R.StudyCafe_R.modules.study.event.StudyUpdateEvent;
 import com.StudyCafe_R.StudyCafe_R.modules.study.form.StudyDescriptionForm;
 import com.StudyCafe_R.StudyCafe_R.modules.study.form.StudyForm;
 import com.StudyCafe_R.StudyCafe_R.modules.tag.Tag;
+import com.StudyCafe_R.StudyCafe_R.modules.tag.TagRepository;
 import com.StudyCafe_R.StudyCafe_R.modules.zone.Zone;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.utility.RandomString;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.AccessDeniedException;
@@ -27,6 +29,7 @@ public class StudyService {
     private final StudyRepository studyRepository;
     private final ModelMapper modelMapper;
     private final ApplicationEventPublisher eventPublisher;
+    private final TagRepository tagRepository;
 
     public Study createNewStudy(Study study, Account account) {
         Study newStudy = studyRepository.save(study);
@@ -204,5 +207,21 @@ public class StudyService {
         Study study = studyRepository.findStudyOnlyByPath(path);
         checkIfStudyExist(path,study);
         return study;
+    }
+
+    public void generateTestStudies(Account account) {
+        for (int i = 0; i< 30; i++) {
+            String randomValue = RandomString.make(5);
+            Study study = Study.builder()
+                    .title("테스트 스터디" + randomValue)
+                    .path("test-" + randomValue)
+                    .shortDescription("테스트용 스터디입니다...")
+                    .fullDescription("테스트용ㅇㅇㅇㅇㅇ")
+                    .build();
+            Study newStudy = createNewStudy(study, account);
+            Tag jpa = tagRepository.findByTitle("JPA").get();
+            StudyTag studytag = StudyTag.builder().study(newStudy).tag(jpa).build();
+            newStudy.getTags().add(studytag);
+        }
     }
 }
