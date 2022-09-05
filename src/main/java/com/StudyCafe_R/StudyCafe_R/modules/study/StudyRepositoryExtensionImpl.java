@@ -1,16 +1,25 @@
 package com.StudyCafe_R.StudyCafe_R.modules.study;
 
+import com.StudyCafe_R.StudyCafe_R.modules.account.domain.QAccountStudyMembers;
 import com.StudyCafe_R.StudyCafe_R.modules.study.domain.QStudy;
+import com.StudyCafe_R.StudyCafe_R.modules.study.domain.QStudyTag;
 import com.StudyCafe_R.StudyCafe_R.modules.study.domain.Study;
+import com.StudyCafe_R.StudyCafe_R.modules.tag.QTag;
 import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import java.util.List;
 
+import static com.querydsl.jpa.JPAExpressions.select;
+
 public class StudyRepositoryExtensionImpl extends QuerydslRepositorySupport implements StudyRepositoryExtension{
 
-    public StudyRepositoryExtensionImpl() {
+    private final JPAQueryFactory jpaQueryFactory;
+    public StudyRepositoryExtensionImpl(JPAQueryFactory jpaQueryFactory) {
         super(Study.class);
+        this.jpaQueryFactory = jpaQueryFactory;
     }
 
     @Override
@@ -19,7 +28,10 @@ public class StudyRepositoryExtensionImpl extends QuerydslRepositorySupport impl
         JPQLQuery<Study> query = from(study).where(study.published.isTrue()
                 .and(study.title.containsIgnoreCase(keyword))
                 .or(study.tags.any().tag.title.containsIgnoreCase(keyword))
-                .or(study.zones.any().zone.localNameOfCity.containsIgnoreCase(keyword)));
+                .or(study.zones.any().zone.localNameOfCity.containsIgnoreCase(keyword)))
+                .leftJoin(study.tags, QStudyTag.studyTag).where(QStudyTag.studyTag.tag.title.like(keyword)).fetchJoin()
+                .leftJoin(study.members, QAccountStudyMembers.accountStudyMembers).fetchJoin();
         return query.fetch();
+
     }
 }
