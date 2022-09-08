@@ -67,6 +67,8 @@ public class Study {
 
     private boolean useBanner;
 
+    private int memberCount;
+
     public void addManager(AccountStudyManager accountStudyManager) {
         managers.add(accountStudyManager);
         accountStudyManager.setStudy(this);
@@ -83,6 +85,7 @@ public class Study {
     public void addMember(AccountStudyMembers accountStudyMembers) {
         members.add(accountStudyMembers);
         accountStudyMembers.setStudy(this);
+        this.memberCount++;
     }
 
     public void removeMember(Account account) {
@@ -91,6 +94,7 @@ public class Study {
                                 .findAny().ifPresent(asm -> asm.setStudy(null));
         members.removeIf(asm -> asm.getAccount().equals(account));
 //        accountStudyMembers.setStudy(null);
+        this.memberCount--;
     }
 
     public void addStudyTag(StudyTag studyTag) {
