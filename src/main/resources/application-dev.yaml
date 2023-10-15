@@ -1,0 +1,45 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ENC(ovJtTsfY4V5VX6xpsNvTfGe+02gxrnkGCU43kE8CEJT0/7EAL9DPza0xgbXU8VP0/cApFkmvP5ipC5AA6Dc4S12nhLBI8LV6xGWiTbzOjkGY+p53iEYNPA==)
+    username: ENC(PGxjfPEVEuIdY4+kKueKxw==)
+    password: ENC(72f54U69pEjV+mEYpIPiFQ==)
+  jpa:
+    hibernate:
+      ddl-auto: update
+#    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ENC(axkUiGC51LiIxgPpZ3F+0RFjAqRjgr/7cv9y532EjEE=)
+    password: ENC(evcnFagh1ljnajhbSqDIfsBRvDvPPAXM2snSHx/rj6c=)
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+  thymeleaf:
+    cache: false
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
