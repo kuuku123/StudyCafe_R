@@ -4,7 +4,7 @@ import com.StudyCafe_R.StudyCafe_R.modules.account.domain.AccountTag;
 import com.StudyCafe_R.StudyCafe_R.modules.study.domain.StudyTag;
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 

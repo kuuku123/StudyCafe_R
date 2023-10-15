@@ -3,7 +3,7 @@ package com.StudyCafe_R.StudyCafe_R.modules.study.domain;
 import com.StudyCafe_R.StudyCafe_R.modules.zone.Zone;
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "study_zone")

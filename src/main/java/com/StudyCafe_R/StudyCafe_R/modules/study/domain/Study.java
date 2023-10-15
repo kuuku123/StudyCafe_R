@@ -8,7 +8,7 @@ import com.StudyCafe_R.StudyCafe_R.modules.tag.Tag;
 import com.StudyCafe_R.StudyCafe_R.modules.zone.Zone;
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;

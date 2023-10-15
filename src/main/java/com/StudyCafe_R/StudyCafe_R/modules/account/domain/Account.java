@@ -2,12 +2,11 @@ package com.StudyCafe_R.StudyCafe_R.modules.account.domain;
 
 import com.StudyCafe_R.StudyCafe_R.modules.event.domain.Enrollment;
 import com.StudyCafe_R.StudyCafe_R.modules.event.domain.Event;
-import com.StudyCafe_R.StudyCafe_R.modules.study.domain.Study;
 import com.StudyCafe_R.StudyCafe_R.modules.tag.Tag;
 import com.StudyCafe_R.StudyCafe_R.modules.zone.Zone;
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
