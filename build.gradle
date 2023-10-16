@@ -53,19 +53,12 @@ dependencies {
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 }
 
-//tasks.named('test') {
-//	useJUnitPlatform()
-//	systemProperty "jasypt.encryptor.password", System.getProperties().get("jasypt.encryptor.password")
-//}
-
 tasks.named("test",Test) {
 	useJUnitPlatform()
 	providers.systemProperty("jasypt.encryptor.password")
 	providers.getProperties().get("jasypt.encryptor.password")
-
-
-//	providers.getProperties().get()
 }
+
 node {
 	version = '16.14.2'
 	download = true
