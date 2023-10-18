@@ -3,7 +3,6 @@ package com.StudyCafe_R.StudyCafe_R.infra.config;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-
 @SpringBootTest
 class JasyptConfigTest {
 
@@ -13,7 +12,8 @@ class JasyptConfigTest {
         String username = "root";
         String password = "1234";
         String mail = "tonydevpc123@gmail.com";
-        String mailpassword = "oirhttfuzgfsonyq";
+//        String mailpassword = "oirhttfuzgfsonyq";
+        String mailpassword = "udnyoanloarjiucu";
         System.out.println(jasyptEncoding(url));
         System.out.println(jasyptEncoding(username));
         System.out.println(jasyptEncoding(password));

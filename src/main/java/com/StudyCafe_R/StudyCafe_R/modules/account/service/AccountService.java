@@ -61,6 +61,7 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
+    //TODO theyleaf에서 만 동작하는 Context ,templateEngine의 존재
     public void sendSignupConfirmEmail(Account newAccount) {
 
         Context context = new Context();
@@ -74,6 +75,7 @@ public class AccountService {
 
         EmailMessage emailMessage = EmailMessage.builder()
                 .to(newAccount.getEmail())
+                .from("tonydevpc123@gmail.com")
                 .subject("스터디 카페 , 회원가입 인증")
                 .message(message)
                 .build();
