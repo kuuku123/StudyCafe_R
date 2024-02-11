@@ -6,6 +6,9 @@
 </head>
 <body class="bg-light">
 <div th:replace="fragments.html :: main-nav"></div>
+<div class="alert alert-warning" role="alert" th:if="${account != null && !account.emailVerified}">
+    스터디 카페 가입을 완료하려면 <a href="#" th:href="@{/check-email}" class="alert-link">계정 인증 이메일을 확인</a> 하세요.
+</div>
 <section class="jumbotron text-center">
     <div class="container">
         <h1>스터디카페</h1>
