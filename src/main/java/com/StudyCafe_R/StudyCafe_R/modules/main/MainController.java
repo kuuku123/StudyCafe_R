@@ -6,6 +6,8 @@ import com.StudyCafe_R.StudyCafe_R.modules.account.service.AccountService;
 import com.StudyCafe_R.StudyCafe_R.modules.account.domain.Account;
 import com.StudyCafe_R.StudyCafe_R.modules.study.StudyRepository;
 import com.StudyCafe_R.StudyCafe_R.modules.study.domain.Study;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,12 +30,12 @@ public class MainController {
     private final StudyRepository studyRepository;
 
     @GetMapping("/")
-    public String home(@CurrentAccount Account account, Model model) {
+    public String home(@CurrentAccount Account account, Model model, HttpServletRequest request, HttpServletResponse response) {
         if (account != null) {
             // login again to remove email validation message
             Account account1 = accountRepository.findById(account.getId()).get();
 
-            accountService.login(account1);
+            accountService.login(account1,request, response);
             model.addAttribute(account1);
         }
         model.addAttribute("studyList", studyRepository.findFirst9ByPublishedAndClosedOrderByPublishedDateTimeDesc(true, false));

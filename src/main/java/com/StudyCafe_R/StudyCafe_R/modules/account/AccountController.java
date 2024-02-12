@@ -3,6 +3,8 @@ package com.StudyCafe_R.StudyCafe_R.modules.account;
 import com.StudyCafe_R.StudyCafe_R.modules.account.form.SignUpForm;
 import com.StudyCafe_R.StudyCafe_R.modules.account.service.AccountService;
 import com.StudyCafe_R.StudyCafe_R.modules.account.domain.Account;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,19 +38,19 @@ public class AccountController {
     }
 
     @PostMapping("/sign-up")
-    public String signUpSubmit(@Valid SignUpForm signUpForm, Errors errors) {
+    public String signUpSubmit(@Valid SignUpForm signUpForm, Errors errors, HttpServletRequest request, HttpServletResponse response) {
         if (errors.hasErrors()) {
             return "account/sign-up";
         }
 
         Account account = accountService.processNewAccount(signUpForm);
-        accountService.login(account);
+        accountService.login(account, request, response);
 
         return "redirect:/";
     }
 
     @GetMapping("/check-email-token")
-    public String checkEmailToken(String token, String email , Model model) {
+    public String checkEmailToken(String token, String email , Model model, HttpServletRequest request, HttpServletResponse response) {
         Account account = accountRepository.findByEmail(email);
         String view = "account/checked-email";
         if (account == null) {
@@ -61,8 +63,8 @@ public class AccountController {
             return view;
         }
 
-        accountService.completeSignUp(account);
-        accountService.login(account);
+        accountService.completeSignUp(account, request, response);
+        accountService.login(account, request, response);
         model.addAttribute("numberOfUser",accountRepository.count());
         model.addAttribute("nickname",account.getNickname());
         return view;
@@ -118,7 +120,7 @@ public class AccountController {
     }
 
     @GetMapping("/login-by-email")
-    public String loginByEmail(String token, String email, Model model) {
+    public String loginByEmail(String token, String email, Model model, HttpServletRequest request, HttpServletResponse response) {
         Account account = accountRepository.findByEmail(email);
         String view = "account/logged-in-by-email";
         if (account == null || !account.isValidToken(token)) {
@@ -126,7 +128,7 @@ public class AccountController {
             return view;
         }
 
-        accountService.login(account);
+        accountService.login(account, request, response);
         return view;
     }
 }

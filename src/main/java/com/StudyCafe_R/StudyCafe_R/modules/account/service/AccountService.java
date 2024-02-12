@@ -14,6 +14,9 @@ import com.StudyCafe_R.StudyCafe_R.modules.account.form.Profile;
 import com.StudyCafe_R.StudyCafe_R.modules.tag.Tag;
 import com.StudyCafe_R.StudyCafe_R.modules.tag.TagRepository;
 import com.StudyCafe_R.StudyCafe_R.modules.zone.Zone;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -21,7 +24,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.TemplateEngine;
@@ -43,6 +48,7 @@ public class AccountService {
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
+    private final SecurityContextRepository securityContextRepository;
 
     private final TemplateEngine templateEngine;
     private final AppProperties appProperties;
@@ -83,16 +89,21 @@ public class AccountService {
     }
 
     //TODO password Authentication 이 정석적인 방법이 아니라 혼란을 야기할 수 있다.
-    public void login(Account account) {
+    //TODO saveContext를 하기위해서  request, response를 controller부터 쭈욱 받아오고 있다.
+    public void login(Account account, HttpServletRequest request, HttpServletResponse response) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 new UserAccount(account),account.getPassword(), List.of(new SimpleGrantedAuthority("ROLE_USER")));
-        SecurityContext context = SecurityContextHolder.getContext();
+        SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
+        SecurityContext context = securityContextHolderStrategy.createEmptyContext();
         context.setAuthentication(token);
+        securityContextHolderStrategy.setContext(context);
+        securityContextRepository.saveContext(context,request ,response);
+
     }
 
-    public void completeSignUp(Account account) {
+    public void completeSignUp(Account account, HttpServletRequest request, HttpServletResponse response) {
         account.completeSignUp();
-        login(account);
+        login(account, request, response);
     }
 
     public void updateProfile(Account account, Profile profile) {
@@ -110,10 +121,10 @@ public class AccountService {
         accountRepository.save(account);
     }
 
-    public void updateNickname(Account account, String nickname) {
+    public void updateNickname(Account account, String nickname, HttpServletRequest request, HttpServletResponse response) {
         account.setNickname(nickname);
         accountRepository.save(account);
-        login(account);
+        login(account, request, response);
     }
 
     public void sendLoginLink(Account account) {

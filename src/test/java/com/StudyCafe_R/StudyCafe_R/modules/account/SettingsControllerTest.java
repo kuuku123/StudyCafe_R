@@ -145,7 +145,7 @@ class SettingsControllerTest extends AbstractContainerBaseTest {
                         .param("nickname", newNickname)
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl( SETTINGS + ACCOUNT))
+                .andExpect(redirectedUrl( ROOT+SETTINGS + ACCOUNT))
                 .andExpect(flash().attributeExists("message"));
 
         assertNotNull(accountRepository.findByNickname("whiteship"));
@@ -230,7 +230,7 @@ class SettingsControllerTest extends AbstractContainerBaseTest {
                         .param("newPasswordConfirm", "12345678")
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl(SETTINGS+PASSWORD))
+                .andExpect(redirectedUrl(ROOT+SETTINGS+PASSWORD))
                 .andExpect(flash().attributeExists("message"));
 
         Account tony = accountRepository.findByNickname("tony");

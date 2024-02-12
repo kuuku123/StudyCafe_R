@@ -51,8 +51,8 @@ class AccountControllerTest extends AbstractContainerBaseTest {
                 .password("12345678")
                 .nickname("tony")
                 .build();
+        account.generateEmailCheckToken();
         Account newAccount = accountRepository.save(account);
-        newAccount.generateEmailCheckToken();
         mockMvc.perform(get("/check-email-token")
                         .param("token",newAccount.getEmailCheckToken())
                         .param("email",newAccount.getEmail()))

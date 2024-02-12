@@ -19,6 +19,8 @@ import com.StudyCafe_R.StudyCafe_R.modules.zone.ZoneForm;
 import com.StudyCafe_R.StudyCafe_R.modules.zone.ZoneRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -94,7 +96,7 @@ public class SettingsController {
 
         accountService.updateProfile(account,profile);
         redirectAttributes.addFlashAttribute("message","프로필 수정 성공");
-        return "redirect:/" + ROOT + SETTINGS + PROFILE;
+        return "redirect:/" + SETTINGS + PROFILE;
     }
 
     @GetMapping(PASSWORD)
@@ -148,13 +150,13 @@ public class SettingsController {
 
     @PostMapping(ACCOUNT)
     public String updateAccount(@CurrentAccount Account account, @Valid NicknameForm nicknameForm, Errors errors
-    , Model model, RedirectAttributes redirectAttributes) {
+    , Model model, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
         if(errors.hasErrors()) {
             model.addAttribute(account);
             return SETTINGS + ACCOUNT;
         }
 
-        accountService.updateNickname(account,nicknameForm.getNickname());
+        accountService.updateNickname(account,nicknameForm.getNickname(), request, response);
         redirectAttributes.addFlashAttribute("message","닉네임을 수정했습니다.");
         return "redirect:/" + SETTINGS + ACCOUNT;
     }
