@@ -35,6 +35,8 @@
    + test코드 실행시 Authentication should not be null 문제 발생
      + https://www.inflearn.com/questions/849839/authentication-should-not-be-null-%EC%98%A4%EB%A5%98-%EC%A7%88%EB%AC%B8
      + https://docs.spring.io/spring-security/reference/servlet/authentication/session-management.html
+     + mvc#authenticated() 에서 DelegatingSecurityContextRepository 에서 HttpSessionSecurityContextRepository를 통해 session에서 조회하기 때문에 session에 저장해주는 과정이 필요함
+       + 이를 HttpSessionSecurityContextRepository를 Bean으로 등록하고 login 호출시 저장해줌으로 해결함
 2. **Thymeleaf </br>**
    + AccountService#sendsSignupConfirmEmail : Context , templateEngine dependency를 해결하거나
    + 아니면 새로운 버전에 맞춰 업그레이드 하거나
